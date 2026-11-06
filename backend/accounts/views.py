@@ -3,13 +3,16 @@ from django.contrib.auth import login, logout
 from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework import status
+from rest_framework import status, generics, filters
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import LoginSerializer, RegisterSerializer, UserSerializer
-
+from .serializers import AdminMemberSerializer
+from .permissions import IsAdminUser
+from .models import User
 
 @method_decorator(ensure_csrf_cookie, name="dispatch")
 class CsrfView(APIView):
@@ -55,3 +58,43 @@ class MeView(APIView):
 
     def get(self, request):
         return Response(UserSerializer(request.user).data)
+    
+class MemberListCreateView(generics.ListCreateAPIView):
+    """
+    Admin can view all members and register new members.
+    """
+
+    serializer_class = AdminMemberSerializer
+    permission_classes = [IsAdminUser]
+
+    queryset = User.objects.filter(role=User.Role.MEMBER)
+
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    filterset_fields = ["is_active"]
+    search_fields = [
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "phone",
+    ]
+
+    ordering_fields = ["date_joined", "first_name", "last_name"]
+    ordering = ["-date_joined"]
+
+
+class MemberDetailView(generics.RetrieveUpdateAPIView):
+    """
+    Admin can view, update and delete a specific member.
+    """
+
+    serializer_class = AdminMemberSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        return User.objects.filter(role=User.Role.MEMBER)

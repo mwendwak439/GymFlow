@@ -8,10 +8,15 @@ from .models import User, MemberProfile
 class MemberProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = MemberProfile
-        fields = ["gender", "date_of_birth", "address", "created_at"]
-        read_only_fields = ["created_at"]
-
-
+        fields = [
+            "gender",
+            "date_of_birth",
+            "address",
+            "status",
+            "created_at"
+        ]
+        read_only_fields = ["status", "created_at"]
+    
 class UserSerializer(serializers.ModelSerializer):
     """What we send back about a user. Never includes the password."""
     profile = MemberProfileSerializer(read_only=True)
@@ -53,6 +58,73 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         MemberProfile.objects.create(user=user)
         return user
+    
+class AdminMemberSerializer(serializers.ModelSerializer):
+    profile = MemberProfileSerializer(required=False)
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "phone",
+            "role",
+            "is_active",
+            "profile",
+        ]
+        read_only_fields = ["id", "role"]
+
+    def create(self, validated_data):
+        profile_data = validated_data.pop("profile", {})
+
+        user = User(**validated_data)
+        user.set_unusable_password()
+        user.role = User.Role.MEMBER
+        user.save()
+
+        profile_status = (
+            MemberProfile.Status.ACTIVE
+            if user.is_active
+            else MemberProfile.Status.INACTIVE
+        )
+
+        MemberProfile.objects.create(
+            user=user,
+            status=profile_status,
+            **profile_data
+        )
+
+        return user
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop("profile", None)
+
+        for attribute, value in validated_data.items():
+            setattr(instance, attribute, value)
+
+        instance.save()
+
+        if profile_data is not None:
+            profile = instance.profile
+
+            for attribute, value in profile_data.items():
+                setattr(profile, attribute, value)
+
+            profile.save()
+
+        # Keep profile status synchronized with account status
+        instance.profile.status = (
+            MemberProfile.Status.ACTIVE
+            if instance.is_active
+            else MemberProfile.Status.INACTIVE
+        )
+        instance.profile.save()
+
+        return instance
+
 
 
 class LoginSerializer(serializers.Serializer):
