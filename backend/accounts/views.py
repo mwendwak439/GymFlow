@@ -13,6 +13,7 @@ from .serializers import LoginSerializer, RegisterSerializer, UserSerializer
 from .serializers import AdminMemberSerializer
 from .permissions import IsAdminUser
 from .models import User
+from .pagination import MemberPagination
 
 @method_decorator(ensure_csrf_cookie, name="dispatch")
 class CsrfView(APIView):
@@ -66,7 +67,7 @@ class MemberListCreateView(generics.ListCreateAPIView):
 
     serializer_class = AdminMemberSerializer
     permission_classes = [IsAdminUser]
-
+    pagination_class = MemberPagination
     queryset = User.objects.filter(role=User.Role.MEMBER)
 
     filter_backends = [

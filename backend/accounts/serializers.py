@@ -76,7 +76,21 @@ class AdminMemberSerializer(serializers.ModelSerializer):
             "profile",
         ]
         read_only_fields = ["id", "role"]
+        extra_kwargs = {
+    "first_name": {"required": True, "allow_blank": False},
+    "last_name": {"required": True, "allow_blank": False},
+}
+        
+    def validate_first_name(self, value):
+        if not value.strip():
+            raise serializers.ValidationError("First name is required.")
+        return value.strip()
 
+
+    def validate_last_name(self, value):
+        if not value.strip():
+            raise serializers.ValidationError("Last name is required.")
+        return value.strip()
     def create(self, validated_data):
         profile_data = validated_data.pop("profile", {})
 
