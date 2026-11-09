@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import MemberDashboard from "./pages/MemberDashboard";
 import Register from "./pages/Register";
 import Members from "./pages/Members";
+import MembershipPlans from "./pages/MembershipPlans";
 
 export default function App() {
   return (
@@ -41,6 +42,15 @@ export default function App() {
       />
 
       <Route path="*" element={<Navigate to="/login" replace />} />
+    
+    <Route
+  path="/admin/membership-plans"
+  element={
+    <ProtectedRoute role="ADMIN">
+      <MembershipPlans />
+    </ProtectedRoute>
+  }
+/>
     </Routes>
   );
 }

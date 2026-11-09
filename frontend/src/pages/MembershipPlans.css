@@ -1,0 +1,124 @@
+
+.membership-plans {
+  min-height: 100vh;
+  padding: 40px;
+  background: #F4F9F4;
+  color: #26352B;
+}
+
+.membership-plans h1 {
+  color: #145C2B;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.membership-plans > p {
+  color: #647067;
+  margin-bottom: 25px;
+}
+
+.membership-plans button {
+  border: none;
+  padding: 11px 18px;
+  border-radius: 7px;
+  background: #1B7F3A;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  margin: 5px;
+}
+
+.membership-plans button:hover {
+  background: #145C2B;
+  transform: translateY(-1px);
+}
+
+.plans-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 22px;
+  margin-top: 30px;
+}
+
+.plan-card {
+  background: white;
+  padding: 25px;
+  border: 1px solid #D9E2DC;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(20, 92, 43, 0.06);
+}
+
+.plan-card h3 {
+  color: #145C2B;
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.plan-card p {
+  color: #526057;
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.membership-plans form {
+  background: white;
+  max-width: 550px;
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #D9E2DC;
+  box-shadow: 0 4px 15px rgba(20, 92, 43, 0.08);
+  margin: 25px 0;
+}
+
+.membership-plans form h2 {
+  color: #145C2B;
+  margin-bottom: 20px;
+}
+
+.membership-plans input,
+.membership-plans textarea,
+.membership-plans select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #D9E2DC;
+  border-radius: 7px;
+  font-size: 15px;
+  background: white;
+  box-sizing: border-box;
+}
+
+.membership-plans input:focus,
+.membership-plans textarea:focus,
+.membership-plans select:focus {
+  outline: none;
+  border-color: #1B7F3A;
+  box-shadow: 0 0 0 3px rgba(27, 127, 58, 0.1);
+}
+
+.membership-plans textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.membership-plans .alert-error {
+  color: #B42318;
+  background: #FEECEB;
+  padding: 12px;
+  border-radius: 7px;
+}
+
+@media (max-width: 650px) {
+  .membership-plans {
+    padding: 20px 15px;
+  }
+
+  .plans-list {
+    grid-template-columns: 1fr;
+  }
+
+  .membership-plans form {
+    padding: 18px;
+  }
+}
