@@ -7,6 +7,7 @@ import MemberDashboard from "./pages/MemberDashboard";
 import Register from "./pages/Register";
 import Members from "./pages/Members";
 import MembershipPlans from "./pages/MembershipPlans";
+import Subscriptions from "./pages/Subscriptions";
 
 export default function App() {
   return (
@@ -51,6 +52,16 @@ export default function App() {
     </ProtectedRoute>
   }
 />
-    </Routes>
+    
+
+    <Route
+  path="/admin/subscriptions"
+  element={
+    <ProtectedRoute role="ADMIN">
+      <Subscriptions />
+    </ProtectedRoute>
+  }
+/>
+</Routes>
   );
 }
