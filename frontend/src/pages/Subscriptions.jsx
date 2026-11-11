@@ -111,10 +111,10 @@ export default function Subscriptions() {
         Assign Subscription
       </button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
+  {error && <p className="error-message">{error}</p>}
+  
       {showForm && (
-        <form onSubmit={handleSubmit}>
+       <form className="subscription-form" onSubmit={handleSubmit}>
           <h2>Assign Membership Plan</h2>
 
           <label>Member</label>

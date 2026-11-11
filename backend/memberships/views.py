@@ -16,7 +16,7 @@ class MembershipPlanListCreateView(generics.ListCreateAPIView):
         return [IsAdminUser()]
 
 
-class MembershipPlanDetailView(generics.RetrieveUpdateDestroyAPIView):
+class MembershipPlanDetailView(generics.RetrieveUpdateAPIView):
     queryset = MembershipPlan.objects.all()
     serializer_class = MembershipPlanSerializer
     permission_classes = [IsAdminUser]
