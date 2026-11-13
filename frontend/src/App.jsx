@@ -8,7 +8,7 @@ import Register from "./pages/Register";
 import Members from "./pages/Members";
 import MembershipPlans from "./pages/MembershipPlans";
 import Subscriptions from "./pages/Subscriptions";
-
+import Workouts from "./pages/workouts";
 export default function App() {
   return (
     <Routes>
@@ -62,6 +62,15 @@ export default function App() {
     </ProtectedRoute>
   }
 />
+<Route
+  path="/workouts"
+  element={
+    <ProtectedRoute>
+      <Workouts />
+    </ProtectedRoute>
+  }
+/>
+
 </Routes>
   );
 }

@@ -21,7 +21,9 @@ export default function AdminDashboard() {
   <Link to="/admin/subscriptions" className="btn btn-primary">
           Manage Subscriptions
         </Link>
-
+    <Link to="/workouts" className="btn btn-primary">
+    Manage Workouts
+    </Link>
 
       <button className="btn btn-primary" onClick={logout}>
         Log out

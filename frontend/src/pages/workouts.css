@@ -1,0 +1,157 @@
+
+.workouts-page {
+  min-height: 100vh;
+  padding: 40px;
+  background: #F4F9F4;
+  color: #26352B;
+}
+
+.workouts-page h1 {
+  color: #145C2B;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.workouts-page .subtitle {
+  color: #647067;
+  margin-bottom: 30px;
+}
+
+.workouts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+.workout-card {
+  background: white;
+  padding: 24px;
+  border: 1px solid #D9E2DC;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(20, 92, 43, 0.06);
+}
+
+.workout-card h2 {
+  color: #145C2B;
+  margin-bottom: 12px;
+}
+
+.workout-card p {
+  color: #647067;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.workout-details {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.workout-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.workout-status.active {
+  background: #E8F3EA;
+  color: #1B7F3A;
+}
+
+.workout-status.inactive {
+  background: #FEECEB;
+  color: #B42318;
+}
+
+.workouts-page .error-message {
+  color: #B42318;
+  background: #FEECEB;
+  padding: 12px;
+  border-radius: 7px;
+}
+
+@media (max-width: 600px) {
+  .workouts-page {
+    padding: 20px 12px;
+  }
+}
+
+.workouts-page button {
+  border: none;
+  padding: 11px 18px;
+  border-radius: 7px;
+  background: #1B7F3A;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.workouts-page button:hover {
+  background: #145C2B;
+}
+
+.workout-form {
+  background: white;
+  max-width: 550px;
+  padding: 25px;
+  margin: 25px 0;
+  border: 1px solid #D9E2DC;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(20, 92, 43, 0.08);
+}
+
+.workout-form h2 {
+  color: #145C2B;
+  margin-bottom: 20px;
+}
+
+.workout-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.workout-form input:not([type="checkbox"]),
+.workout-form textarea,
+.workout-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #D9E2DC;
+  border-radius: 7px;
+  box-sizing: border-box;
+}
+
+.workout-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.workout-form input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.workout-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.workout-actions button {
+  margin: 0;
+}
+
+.workout-actions .delete-btn {
+  background: #DC3545;
+}
+
+.workout-actions .delete-btn:hover {
+  background: #B42318;
+}
