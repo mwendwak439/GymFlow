@@ -46,10 +46,11 @@ class MembershipPlan(models.Model):
 class Subscription(models.Model):
 
     STATUS_CHOICES = [
-        ("ACTIVE", "Active"),
-        ("EXPIRED", "Expired"),
-        ("CANCELLED", "Cancelled"),
-    ]
+    ("PENDING", "Pending Payment"),
+    ("ACTIVE", "Active"),
+    ("EXPIRED", "Expired"),
+    ("CANCELLED", "Cancelled"),
+]
 
     member = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -69,25 +70,26 @@ class Subscription(models.Model):
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
-        default="ACTIVE"
+        default="PENDING"
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    def save(self, *args, **kwargs):        
 
-    def save(self, *args, **kwargs):
         if self.plan_id and self.start_date:
             self.end_date = calculate_expiry_date(
                 self.start_date,
                 self.plan.duration
             )
 
-        if self.end_date and self.status != "CANCELLED":
-            if self.end_date <= timezone.localdate():
-                self.status = "EXPIRED"
-            else:
-                self.status = "ACTIVE"
+        if (
+            self.end_date
+            and self.status == "ACTIVE"
+            and self.end_date <= timezone.localdate()
+        ):
+            self.status = "EXPIRED"
 
         super().save(*args, **kwargs)
-
+    
     def __str__(self):
         return f"{self.member.username} - {self.plan.name}"

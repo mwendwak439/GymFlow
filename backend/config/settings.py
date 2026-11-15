@@ -14,6 +14,13 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 
+
+# M-Pesa Daraja Configuration
+MPESA_CONSUMER_KEY = os.getenv("MPESA_CONSUMER_KEY")
+MPESA_CONSUMER_SECRET = os.getenv("MPESA_CONSUMER_SECRET")
+MPESA_SHORTCODE = os.getenv("MPESA_SHORTCODE")
+MPESA_PASSKEY = os.getenv("MPESA_PASSKEY")
+MPESA_CALLBACK_URL = os.getenv("MPESA_CALLBACK_URL")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +33,12 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "prune-slicing-dominoes.ngrok-free.dev",
+
+]
 
 
 # Application definition

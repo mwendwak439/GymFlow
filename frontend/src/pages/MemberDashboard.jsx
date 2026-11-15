@@ -17,6 +17,9 @@ export default function MemberDashboard() {
       My Attendance
       </Link>
 
+<Link to="/member/plans" className="btn btn-primary">
+  View Membership Plans
+</Link>
       <button className="btn btn-primary" onClick={logout}>Log out</button>
     </div>
     </div>

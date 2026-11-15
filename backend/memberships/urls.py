@@ -4,7 +4,9 @@ from .views import (
     MembershipPlanDetailView,
      SubscriptionListCreateView,
      SubscriptionDetailView,
-)
+    MemberSubscriptionCreateView,
+)  
+
 
 urlpatterns = [
     path("plans/", MembershipPlanListCreateView.as_view(), name="membership-plans"),
@@ -12,6 +14,12 @@ urlpatterns = [
     
     path("subscriptions/", SubscriptionListCreateView.as_view(), name="subscriptions"),
     path("subscriptions/<int:pk>/", SubscriptionDetailView.as_view(), name="subscription-detail"),
+    path(
+    "my-subscriptions/",
+    MemberSubscriptionCreateView.as_view(),
+    name="member-subscription-create"
+),
+
 ]
 
 

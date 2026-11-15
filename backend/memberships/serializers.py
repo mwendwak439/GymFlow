@@ -23,6 +23,17 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         source="plan.name",
         read_only=True
     )
+    latest_payment_status = serializers.SerializerMethodField()
+    mpesa_receipt_number = serializers.SerializerMethodField()
+
+    def get_latest_payment_status(self, obj):
+        payment = obj.payments.order_by("-created_at").first()
+        return payment.status if payment else None
+
+    def get_mpesa_receipt_number(self, obj):
+        payment = obj.payments.order_by("-created_at").first()
+        return payment.mpesa_receipt_number if payment else None
+
 
     class Meta:
         model = Subscription
@@ -36,14 +47,16 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             "end_date",
             "status",
             "created_at",
+            "latest_payment_status",
+            "mpesa_receipt_number",
         ]
-
         read_only_fields = [
             "id",
             "end_date",
             "created_at",
+            "status",
         ]
-
+       
     def validate_member(self, value):
         if value.role != User.Role.MEMBER:
             raise serializers.ValidationError(
@@ -57,3 +70,10 @@ class SubscriptionSerializer(serializers.ModelSerializer):
                 "You cannot assign an inactive membership plan."
             )
         return value
+class MemberSubscriptionSerializer(SubscriptionSerializer):
+
+    class Meta(SubscriptionSerializer.Meta):
+        read_only_fields = [
+            *SubscriptionSerializer.Meta.read_only_fields,
+            "member",
+        ]
