@@ -25,6 +25,10 @@ export default function AdminDashboard() {
     Manage Workouts
     </Link>
 
+    <Link to="/admin/attendance" className="btn btn-primary">
+  Manage Attendance
+</Link>
+
       <button className="btn btn-primary" onClick={logout}>
         Log out
         </button>

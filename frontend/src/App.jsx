@@ -9,6 +9,8 @@ import Members from "./pages/Members";
 import MembershipPlans from "./pages/MembershipPlans";
 import Subscriptions from "./pages/Subscriptions";
 import Workouts from "./pages/workouts";
+import Attendance from "./pages/Attendance";
+
 export default function App() {
   return (
     <Routes>
@@ -67,6 +69,25 @@ export default function App() {
   element={
     <ProtectedRoute>
       <Workouts />
+    </ProtectedRoute>
+  }
+/>
+
+
+<Route
+  path="/attendance"
+  element={
+    <ProtectedRoute role="MEMBER">
+      <Attendance />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/attendance"
+  element={
+    <ProtectedRoute role="ADMIN">
+      <Attendance />
     </ProtectedRoute>
   }
 />

@@ -13,7 +13,10 @@ export default function MemberDashboard() {
       <Link to="/workouts" className="btn btn-primary">
       View workouts
       </Link>
-      
+      <Link to="/attendance" className="btn btn-primary">
+      My Attendance
+      </Link>
+
       <button className="btn btn-primary" onClick={logout}>Log out</button>
     </div>
     </div>
