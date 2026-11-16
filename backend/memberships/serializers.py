@@ -23,6 +23,11 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         source="plan.name",
         read_only=True
     )
+    plan_price = serializers.ReadOnlyField(
+        source="plan.price"
+        )
+
+
     latest_payment_status = serializers.SerializerMethodField()
     mpesa_receipt_number = serializers.SerializerMethodField()
 
@@ -43,6 +48,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             "member_name",
             "plan",
             "plan_name",
+            "plan_price",
             "start_date",
             "end_date",
             "status",
