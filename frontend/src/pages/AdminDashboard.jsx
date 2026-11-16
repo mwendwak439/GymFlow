@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import RevenueChart from "../components/RevenueChart";
+import MemberGrowthChart from "../components/MemberGrowthChart";
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
@@ -94,6 +95,11 @@ setStats(response.data);
   <RevenueChart data={stats.monthly_revenue || []} />
 )}
 
+{stats && (
+  <MemberGrowthChart
+    data={stats.monthly_member_growth || []}
+  />
+)}
           <h2>Recent Payments</h2>
 
           <div className="admin-table">

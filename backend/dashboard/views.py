@@ -88,8 +88,9 @@ class AdminDashboardStatsView(APIView):
         ).aggregate(total=Sum("amount"))["total"] or 0
 
 
-        # Monthly revenue for the last six months
+               # Monthly revenue and new members for the last six months
         monthly_revenue = []
+        monthly_member_growth = []
 
         for i in range(5, -1, -1):
             month_index = today.year * 12 + today.month - 1 - i
@@ -116,29 +117,39 @@ class AdminDashboardStatsView(APIView):
                 created_at__lt=end_datetime
             ).aggregate(total=Sum("amount"))["total"] or 0
 
+            new_members = User.objects.filter(
+                role="MEMBER",
+                date_joined__gte=start_datetime,
+                date_joined__lt=end_datetime
+            ).count()
+
             monthly_revenue.append({
                 "month": start_date.strftime("%b %Y"),
                 "revenue": float(revenue)
             })
 
+            monthly_member_growth.append({
+                "month": start_date.strftime("%b %Y"),
+                "members": new_members
+            })
 
-            recent_payments = Payment.objects.select_related(
-                "subscription__member",
-                "subscription__plan"
-            ).order_by("-created_at")[:5]
+        # Recent dashboard activity
+        recent_payments = Payment.objects.select_related(
+            "subscription__member",
+            "subscription__plan"
+        ).order_by("-created_at")[:5]
 
-            recent_members = User.objects.filter(
-                role="MEMBER"
-            ).order_by("-date_joined")[:5]
+        recent_members = User.objects.filter(
+            role="MEMBER"
+        ).order_by("-date_joined")[:5]
 
-            successful_payments = Payment.objects.filter(
-                status="SUCCESS"
-            ).count()
+        successful_payments = Payment.objects.filter(
+            status="SUCCESS"
+        ).count()
 
-            failed_payments = Payment.objects.filter(
-                status="FAILED"
-            ).count()
-
+        failed_payments = Payment.objects.filter(
+            status="FAILED"
+        ).count()
         return Response({
             "total_members": total_members,
             "active_subscriptions": active_subscriptions,
@@ -149,6 +160,7 @@ class AdminDashboardStatsView(APIView):
             "successful_payments": successful_payments,
             "failed_payments": failed_payments,
             "monthly_revenue": monthly_revenue,
+            "monthly_member_growth": monthly_member_growth,
 
             "recent_payments": [
                 {
