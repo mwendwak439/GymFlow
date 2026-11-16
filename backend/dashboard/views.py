@@ -13,6 +13,7 @@ from payments.models import Payment
 from rest_framework.permissions import BasePermission
 from datetime import date, datetime
 from django.utils import timezone
+from memberships.models import Subscription, MembershipPlan
 
 User = get_user_model()
 
@@ -35,6 +36,19 @@ class AdminDashboardStatsView(APIView):
         total_members = User.objects.filter(
             role="MEMBER"
         ).count()
+
+                # Membership plan performance
+        plan_performance = []
+
+        for plan in MembershipPlan.objects.all():
+            member_count = Subscription.objects.filter(
+                plan=plan
+            ).values("member").distinct().count()
+
+            plan_performance.append({
+                "plan": plan.name,
+                "members": member_count
+            })
 
         active_subscriptions = Subscription.objects.filter(
             status="ACTIVE"
@@ -161,6 +175,7 @@ class AdminDashboardStatsView(APIView):
             "failed_payments": failed_payments,
             "monthly_revenue": monthly_revenue,
             "monthly_member_growth": monthly_member_growth,
+            "plan_performance": plan_performance,
 
             "recent_payments": [
                 {

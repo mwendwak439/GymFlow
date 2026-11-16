@@ -5,11 +5,13 @@ import { Link } from "react-router-dom";
 import api from "../services/api";
 import RevenueChart from "../components/RevenueChart";
 import MemberGrowthChart from "../components/MemberGrowthChart";
+import PlanPerformanceChart from "../components/PlanPerformanceChart";
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
 
   const [stats, setStats] = useState(null);
+  console.log("Plan performance:", stats?.plan_performance);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -98,6 +100,11 @@ setStats(response.data);
 {stats && (
   <MemberGrowthChart
     data={stats.monthly_member_growth || []}
+  />
+)}
+{stats && (
+  <PlanPerformanceChart
+    data={stats.plan_performance || []}
   />
 )}
           <h2>Recent Payments</h2>
