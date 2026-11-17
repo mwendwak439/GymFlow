@@ -6,6 +6,7 @@ import api from "../services/api";
 import RevenueChart from "../components/RevenueChart";
 import MemberGrowthChart from "../components/MemberGrowthChart";
 import PlanPerformanceChart from "../components/PlanPerformanceChart";
+import ExpiryAlerts from "../components/ExpiryAlerts";  
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
@@ -105,6 +106,11 @@ setStats(response.data);
 {stats && (
   <PlanPerformanceChart
     data={stats.plan_performance || []}
+  />
+)}
+{stats && (
+  <ExpiryAlerts
+    subscriptions={stats.expiring_subscriptions || []}
   />
 )}
           <h2>Recent Payments</h2>

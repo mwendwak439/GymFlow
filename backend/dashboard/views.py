@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from memberships.models import Subscription
 from payments.models import Payment
 from rest_framework.permissions import BasePermission
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from django.utils import timezone
 from memberships.models import Subscription, MembershipPlan
 
@@ -57,6 +57,16 @@ class AdminDashboardStatsView(APIView):
         expired_subscriptions = Subscription.objects.filter(
             status="EXPIRED"
         ).count()
+
+                # Memberships expiring within the next 7 days
+        today = timezone.localdate()
+        expiry_limit = today + timedelta(days=7)
+
+        expiring_subscriptions = Subscription.objects.filter(
+            status="ACTIVE",
+            end_date__gte=today,
+            end_date__lte=expiry_limit
+        ).select_related("member", "plan").order_by("end_date")
 
         total_revenue = Payment.objects.filter(
             status="SUCCESS"
@@ -176,7 +186,15 @@ class AdminDashboardStatsView(APIView):
             "monthly_revenue": monthly_revenue,
             "monthly_member_growth": monthly_member_growth,
             "plan_performance": plan_performance,
-
+            "expiring_subscriptions": [
+                {
+                    "id": subscription.id,
+                    "member": subscription.member.username,
+                    "plan": subscription.plan.name,
+                    "end_date": subscription.end_date,
+                }
+                for subscription in expiring_subscriptions
+            ],
             "recent_payments": [
                 {
                     "id": payment.id,
