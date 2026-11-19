@@ -20,6 +20,7 @@ export default function Members() {
 const [editingMember, setEditingMember] = useState(null);
 const [selectedMember, setSelectedMember] = useState(null);
 const [profileLoading, setProfileLoading] = useState(false);
+const [memberSubscriptions, setMemberSubscriptions] = useState([]);
 const handleEditClick = (member) => {
   setEditingMember(member);
 
@@ -33,6 +34,7 @@ const handleEditClick = (member) => {
 
   setShowForm(true);
 };
+
 const handleViewProfile = async (member) => {
   setProfileLoading(true);
   setSelectedMember(null);
@@ -40,12 +42,23 @@ const handleViewProfile = async (member) => {
   try {
     const response = await api.get(`/members/${member.id}/`);
     setSelectedMember(response.data);
+
+    const subscriptions = await api.get(
+      `/subscriptions/?member=${member.id}`
+    );
+
+    setMemberSubscriptions(subscriptions.data.results);
+
   } catch (err) {
     setError("Failed to load member profile.");
+    console.error("Profile error:", err);
   } finally {
     setProfileLoading(false);
   }
 };
+  
+
+
 
 const handleToggleStatus = async (member) => {
   try {
@@ -208,6 +221,53 @@ const handleAddMember = async (e) => {
       <p><strong>Profile Status:</strong> {selectedMember.profile?.status || "Not provided"}</p>
       <p><strong>Date Registered:</strong> {selectedMember.date_joined ? new Date(selectedMember.date_joined).toLocaleDateString() : "Not available"}</p>
     </div>
+
+<div className="membership-history">
+  <h3>Membership History</h3>
+
+  {memberSubscriptions.length === 0 ? (
+    <p>No membership history found.</p>
+  ) : (
+    <div className="history-list">
+      {memberSubscriptions.map((subscription) => (
+        <div className="history-card" key={subscription.id}>
+          <h4>{subscription.plan_name}</h4>
+
+          <p>
+            <strong>Price:</strong> KES{" "}
+            {Number(subscription.plan_price).toLocaleString()}
+          </p>
+
+          <p>
+            <strong>Start Date:</strong> {subscription.start_date}
+          </p>
+
+          <p>
+            <strong>End Date:</strong> {subscription.end_date}
+          </p>
+
+         <p>
+  <strong>Status:</strong>{" "}
+  <span className={`subscription-status ${subscription.status.toLowerCase()}`}>
+    {subscription.status}
+  </span>
+</p>
+
+          <p>
+            <strong>Payment:</strong>{" "}
+            {subscription.latest_payment_status || "No payment recorded"}
+          </p>
+
+          <p>
+            <strong>M-Pesa Receipt:</strong>{" "}
+            {subscription.mpesa_receipt_number || "Not available"}
+          </p>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
   </div>
 )}
         {showForm && (
@@ -405,3 +465,4 @@ const handleAddMember = async (e) => {
     </div>
   );
 }
+

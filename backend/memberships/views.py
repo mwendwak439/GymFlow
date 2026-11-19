@@ -23,20 +23,32 @@ class MembershipPlanDetailView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAdminUser]
 
 
+
 class SubscriptionListCreateView(generics.ListCreateAPIView):
     serializer_class = SubscriptionSerializer
     permission_classes = [IsAdminUser]
 
     def get_queryset(self):
+        # Automatically expire old subscriptions
         Subscription.objects.filter(
             end_date__lte=timezone.localdate()
         ).exclude(
             status="CANCELLED"
         ).update(status="EXPIRED")
 
-        return Subscription.objects.select_related(
+        # Get all subscriptions
+        queryset = Subscription.objects.select_related(
             "member", "plan"
         ).all().order_by("-created_at")
+
+        # Filter by member ID when provided
+        member_id = self.request.query_params.get("member")
+
+        if member_id:
+            queryset = queryset.filter(member_id=member_id)
+
+        return queryset
+
 
 
 class MemberSubscriptionCreateView(generics.ListCreateAPIView):
@@ -81,6 +93,13 @@ class SubscriptionDetailView(generics.RetrieveUpdateAPIView):
             status="CANCELLED"
         ).update(status="EXPIRED")
 
-        return Subscription.objects.select_related(
+        queryset = Subscription.objects.select_related(
             "member", "plan"
-        ).all()
+        ).all().order_by("-created_at")
+
+        member_id = self.request.query_params.get("member")
+
+        if member_id:
+            queryset = queryset.filter(member_id=member_id)
+
+        return queryset

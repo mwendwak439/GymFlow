@@ -313,3 +313,92 @@
     min-width: 125px;
   }
 }
+
+/* Membership History */
+.membership-history {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid var(--border-color, #e5e7eb);
+}
+
+.membership-history > h3 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: var(--text-primary, #1f2937);
+}
+
+.history-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.history-card {
+  background: var(--background-color, #f8fafc);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.history-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.07);
+}
+
+.history-card h4 {
+  font-size: 18px;
+  margin: 0 0 15px;
+  color: var(--text-primary, #1f2937);
+}
+
+.history-card p {
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary, #64748b);
+}
+
+.history-card strong {
+  color: var(--text-primary, #1f2937);
+}
+
+@media (max-width: 600px) {
+  .history-list {
+    grid-template-columns: 1fr;
+  }
+
+  .history-card {
+    padding: 16px;
+  }
+}
+
+/* Subscription Status Badges */
+.subscription-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.subscription-status.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.subscription-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.subscription-status.expired {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.subscription-status.cancelled {
+  background: #e5e7eb;
+  color: #374151;
+}

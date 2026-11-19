@@ -21,6 +21,17 @@ const [formData, setFormData] = useState({
   is_active: true,
 });
 const [editingWorkout, setEditingWorkout] = useState(null);
+// Exercise Management
+const [exercises, setExercises] = useState([]);
+const [selectedWorkout, setSelectedWorkout] = useState(null);
+const [showExerciseForm, setShowExerciseForm] = useState(false);
+const [exerciseForm, setExerciseForm] = useState({
+  name: "",
+  description: "",
+  sets: 3,
+  repetitions: "",
+  duration_minutes: "",
+});
 
   const fetchWorkouts = async () => {
     try {
@@ -32,6 +43,66 @@ const [editingWorkout, setEditingWorkout] = useState(null);
       setLoading(false);
     }
   };
+
+const fetchExercises = async (workoutId) => {
+  try {
+    const response = await api.get(`/exercises/?workout=${workoutId}`);
+
+    const data = response.data.results || response.data;
+
+    setExercises(data);
+  } catch (err) {
+    setError("Failed to load exercises.");
+  }
+};
+
+const handleExerciseChange = (e) => {
+  const { name, value } = e.target;
+
+  setExerciseForm({
+    ...exerciseForm,
+    [name]: value,
+  });
+};
+
+const handleExerciseSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+
+  try {
+    const data = {
+      ...exerciseForm,
+      workout: selectedWorkout.id,
+      sets: Number(exerciseForm.sets),
+      repetitions: exerciseForm.repetitions
+        ? Number(exerciseForm.repetitions)
+        : null,
+      duration_minutes: exerciseForm.duration_minutes
+        ? Number(exerciseForm.duration_minutes)
+        : null,
+    };
+
+    await api.post("/exercises/", data);
+
+    setExerciseForm({
+      name: "",
+      description: "",
+      sets: 3,
+      repetitions: "",
+      duration_minutes: "",
+    });
+
+    setShowExerciseForm(false);
+
+    await fetchExercises(selectedWorkout.id);
+  } catch (err) {
+    setError(
+      err.response?.data?.detail ||
+      "Failed to save exercise. Please check your information."
+    );
+  }
+};
+
 
   const handleChange = (e) => {
   const { name, value, type, checked } = e.target;
@@ -208,6 +279,19 @@ const handleSubmit = async (e) => {
             </span>
 
 {user?.role === "ADMIN" && (
+  <button
+    onClick={() => {
+      setSelectedWorkout(workout);
+      fetchExercises(workout.id);
+      setShowExerciseForm(false);
+    }}
+  >
+    Manage Exercises
+  </button>
+)}
+
+
+{user?.role === "ADMIN" && (
   <div className="workout-actions">
     <button onClick={() => handleEdit(workout)}>
       Edit
@@ -225,10 +309,95 @@ const handleSubmit = async (e) => {
           </div>
         ))}
       </div>
+      
 
       {workouts.length === 0 && (
         <p>No workouts available yet.</p>
       )}
+
+      {selectedWorkout && user?.role === "ADMIN" && (
+  <div className="workout-form">
+    <h2>Exercises for {selectedWorkout.name}</h2>
+
+    <button onClick={() => setShowExerciseForm(true)}>
+      Add Exercise
+    </button>
+
+{showExerciseForm && (
+  <form onSubmit={handleExerciseSubmit} className="workout-form">
+    <h3>Add New Exercise</h3>
+
+    <label>Exercise Name</label>
+    <input
+      type="text"
+      name="name"
+      value={exerciseForm.name}
+      onChange={handleExerciseChange}
+      required
+    />
+
+    <label>Description</label>
+    <textarea
+      name="description"
+      value={exerciseForm.description}
+      onChange={handleExerciseChange}
+    />
+
+    <label>Sets</label>
+    <input
+      type="number"
+      name="sets"
+      min="1"
+      value={exerciseForm.sets}
+      onChange={handleExerciseChange}
+      required
+    />
+
+    <label>Repetitions</label>
+    <input
+      type="number"
+      name="repetitions"
+      min="1"
+      value={exerciseForm.repetitions}
+      onChange={handleExerciseChange}
+    />
+
+    <label>Duration (minutes)</label>
+    <input
+      type="number"
+      name="duration_minutes"
+      min="1"
+      value={exerciseForm.duration_minutes}
+      onChange={handleExerciseChange}
+    />
+
+    <button type="submit">Save Exercise</button>
+
+    <button
+      type="button"
+      onClick={() => setShowExerciseForm(false)}
+    >
+      Cancel
+    </button>
+  </form>
+)}
+
+    {exercises.length === 0 ? (
+      <p>No exercises added yet.</p>
+    ) : (
+      exercises.map((exercise) => (
+        <div key={exercise.id}>
+          <h3>{exercise.name}</h3>
+          <p>{exercise.description}</p>
+          <p>Sets: {exercise.sets}</p>
+          <p>Repetitions: {exercise.repetitions || "Not specified"}</p>
+          <p>Duration: {exercise.duration_minutes || "Not specified"} minutes</p>
+        </div>
+      ))
+    )}
+  </div>
+)}
     </div>
+    
   );
 }
