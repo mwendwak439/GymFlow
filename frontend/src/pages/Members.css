@@ -256,3 +256,60 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Member Profile */
+.member-profile {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 14px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+}
+
+.profile-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.profile-details h3 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.profile-details p {
+  margin: 12px 0;
+  color: var(--text-secondary, #64748b);
+  line-height: 1.6;
+}
+
+.profile-details strong {
+  color: var(--text-primary, #1f2937);
+  display: inline-block;
+  min-width: 150px;
+}
+
+@media (max-width: 600px) {
+  .member-profile {
+    padding: 16px;
+  }
+
+  .profile-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .profile-details strong {
+    min-width: 125px;
+  }
+}

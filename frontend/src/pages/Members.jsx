@@ -18,6 +18,8 @@ export default function Members() {
   phone: "",
 }); 
 const [editingMember, setEditingMember] = useState(null);
+const [selectedMember, setSelectedMember] = useState(null);
+const [profileLoading, setProfileLoading] = useState(false);
 const handleEditClick = (member) => {
   setEditingMember(member);
 
@@ -31,7 +33,19 @@ const handleEditClick = (member) => {
 
   setShowForm(true);
 };
+const handleViewProfile = async (member) => {
+  setProfileLoading(true);
+  setSelectedMember(null);
 
+  try {
+    const response = await api.get(`/members/${member.id}/`);
+    setSelectedMember(response.data);
+  } catch (err) {
+    setError("Failed to load member profile.");
+  } finally {
+    setProfileLoading(false);
+  }
+};
 
 const handleToggleStatus = async (member) => {
   try {
@@ -162,6 +176,40 @@ const handleAddMember = async (e) => {
       </div>
 
       <div className="members-content">
+        {profileLoading && (
+  <div className="loading">Loading member profile...</div>
+)}
+
+{selectedMember && (
+  <div className="member-profile">
+    <div className="profile-header">
+      <h2>Member Profile</h2>
+
+      <button
+        className="btn btn-cancel"
+        onClick={() => setSelectedMember(null)}
+      >
+        Close Profile
+      </button>
+    </div>
+
+    <div className="profile-details">
+      <h3>
+        {selectedMember.first_name} {selectedMember.last_name}
+      </h3>
+
+      <p><strong>Username:</strong> {selectedMember.username}</p>
+      <p><strong>Email:</strong> {selectedMember.email}</p>
+      <p><strong>Phone:</strong> {selectedMember.phone || "Not provided"}</p>
+      <p><strong>Gender:</strong> {selectedMember.profile?.gender || "Not provided"}</p>
+      <p><strong>Date of Birth:</strong> {selectedMember.profile?.date_of_birth || "Not provided"}</p>
+      <p><strong>Address:</strong> {selectedMember.profile?.address || "Not provided"}</p>
+      <p><strong>Account Status:</strong> {selectedMember.is_active ? "Active" : "Inactive"}</p>
+      <p><strong>Profile Status:</strong> {selectedMember.profile?.status || "Not provided"}</p>
+      <p><strong>Date Registered:</strong> {selectedMember.date_joined ? new Date(selectedMember.date_joined).toLocaleDateString() : "Not available"}</p>
+    </div>
+  </div>
+)}
         {showForm && (
   <div className="member-form-container">
    <h2>{editingMember ? "Edit Member" : "Add New Member"}</h2>
@@ -332,6 +380,13 @@ const handleAddMember = async (e) => {
   onClick={() => handleToggleStatus(member)}
 >
   {member.is_active ? "Deactivate" : "Activate"}
+</button>
+<button
+  type="button"
+  className="btn btn-primary"
+  onClick={() => handleViewProfile(member)}
+>
+  View Profile
 </button>
 </td>
 

@@ -73,9 +73,10 @@ class AdminMemberSerializer(serializers.ModelSerializer):
             "phone",
             "role",
             "is_active",
+            "date_joined",
             "profile",
         ]
-        read_only_fields = ["id", "role"]
+        read_only_fields = ["id", "role", "date_joined"]
         extra_kwargs = {
     "first_name": {"required": True, "allow_blank": False},
     "last_name": {"required": True, "allow_blank": False},
