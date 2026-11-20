@@ -25,6 +25,7 @@ const [editingWorkout, setEditingWorkout] = useState(null);
 const [exercises, setExercises] = useState([]);
 const [selectedWorkout, setSelectedWorkout] = useState(null);
 const [showExerciseForm, setShowExerciseForm] = useState(false);
+const[editingExercise,setEditingExercise]=useState(null)
 const [exerciseForm, setExerciseForm] = useState({
   name: "",
   description: "",
@@ -65,6 +66,36 @@ const handleExerciseChange = (e) => {
   });
 };
 
+const handleEditExercise = (exercise) => {
+  setEditingExercise(exercise);
+
+  setExerciseForm({
+    name: exercise.name,
+    description: exercise.description || "",
+    sets: exercise.sets,
+    repetitions: exercise.repetitions || "",
+    duration_minutes: exercise.duration_minutes || "",
+  });
+
+  setShowExerciseForm(true);
+};
+
+const handleDeleteExercise = async (exercise) => {
+  const confirmed = window.confirm(
+    `Are you sure you want to delete ${exercise.name}?`
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await api.delete(`/exercises/${exercise.id}/`);
+
+    await fetchExercises(selectedWorkout.id);
+  } catch (err) {
+    setError("Failed to delete exercise.");
+  }
+};
+
 const handleExerciseSubmit = async (e) => {
   e.preventDefault();
   setError("");
@@ -82,7 +113,11 @@ const handleExerciseSubmit = async (e) => {
         : null,
     };
 
-    await api.post("/exercises/", data);
+   if(editingExercise){
+    await api.patch(`/exercises/${editingExercise.id}/`, data);
+   } else{
+    await api.post("/exercises/", data)
+   }
 
     setExerciseForm({
       name: "",
@@ -93,6 +128,7 @@ const handleExerciseSubmit = async (e) => {
     });
 
     setShowExerciseForm(false);
+    setEditingExercise(null);
 
     await fetchExercises(selectedWorkout.id);
   } catch (err) {
@@ -325,7 +361,7 @@ const handleSubmit = async (e) => {
 
 {showExerciseForm && (
   <form onSubmit={handleExerciseSubmit} className="workout-form">
-    <h3>Add New Exercise</h3>
+  <h3>{editingExercise? "Edit Exercise":"Add New Exercise"}</h3>
 
     <label>Exercise Name</label>
     <input
@@ -371,7 +407,9 @@ const handleSubmit = async (e) => {
       onChange={handleExerciseChange}
     />
 
-    <button type="submit">Save Exercise</button>
+    <button type="submit">
+   {editingExercise? "Update Exercise":"Save Exercise"}
+      </button>
 
     <button
       type="button"
@@ -392,7 +430,21 @@ const handleSubmit = async (e) => {
           <p>Sets: {exercise.sets}</p>
           <p>Repetitions: {exercise.repetitions || "Not specified"}</p>
           <p>Duration: {exercise.duration_minutes || "Not specified"} minutes</p>
+          <div className="exercise-actions">
+
+            <button onClick={() => handleEditExercise(exercise)}>
+            Edit
+          </button>
+          <button
+            className="delete-btn"
+            onClick={()=>handleDeleteExercise(exercise)}
+            >
+              Delete
+
+          </button>
+          </div>
         </div>
+        
       ))
     )}
   </div>

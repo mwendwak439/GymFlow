@@ -16,6 +16,11 @@ export default function Members() {
   username: "",
   email: "",
   phone: "",
+  profile:{
+    gender:"",
+    date_of_birth:"",
+    address:""
+  }
 }); 
 const [editingMember, setEditingMember] = useState(null);
 const [selectedMember, setSelectedMember] = useState(null);
@@ -30,6 +35,11 @@ const handleEditClick = (member) => {
     username: member.username || "",
     email: member.email || "",
     phone: member.phone || "",
+     profile: {
+    gender: member.profile?.gender || "",
+    date_of_birth: member.profile?.date_of_birth || "",
+    address: member.profile?.address || "",
+  },
   });
 
   setShowForm(true);
@@ -78,6 +88,32 @@ const handleToggleStatus = async (member) => {
 const handleAddMember = async (e) => {
   e.preventDefault();
 
+  // Validate required fields
+if (
+  !formData.first_name.trim() ||
+  !formData.last_name.trim() ||
+  !formData.username.trim() ||
+  !formData.email.trim() ||
+  !formData.phone.trim()
+) {
+  setError("Please fill in all required fields.");
+  return;
+}
+
+// Validate email format
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailPattern.test(formData.email)) {
+  setError("Please enter a valid email address.");
+  return;
+}
+
+// Validate phone number
+if (!/^\+?\d{10,15}$/.test(formData.phone.trim())) {
+  setError("Please enter a valid phone number (10–15 digits).");
+  return;
+}
+
   try {
     let response;
 
@@ -104,14 +140,29 @@ const handleAddMember = async (e) => {
       username: "",
       email: "",
       phone: "",
+        profile: {
+    gender: "",
+    date_of_birth: "",
+    address: "",
+  },
     });
 
     setEditingMember(null);
     setShowForm(false);
     setError("");
-  } catch (err) {
-    setError("Failed to save member. Please check the details and try again.");
+ } catch (err) {
+  const responseData = err.response?.data;
+
+  if (responseData) {
+    const firstError = Object.values(responseData)
+      .flat(Infinity)
+      .find((message) => typeof message === "string");
+
+    setError(firstError || "Failed to save member. Please check your details.");
+  } else {
+    setError("Unable to connect to the server. Please try again.");
   }
+}
 };
   useEffect(() => {
     const fetchMembers = async () => {
@@ -338,6 +389,65 @@ const handleAddMember = async (e) => {
   }
 />
       </div>
+
+      <div className="form-group">
+  <label>Gender</label>
+  <select
+    value={formData.profile.gender}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        profile: {
+          ...formData.profile,
+          gender: e.target.value,
+        },
+      })
+    }
+  >
+    <option value="">Select gender</option>
+    <option value="M">Male</option>
+    <option value="F">Female</option>
+    <option value="O">Other</option>
+  </select>
+</div>
+
+<div className="form-group">
+  <label>Date of Birth</label>
+  <input
+  type="date"
+  value={
+    formData.profile.date_of_birth
+      ? formData.profile.date_of_birth.slice(0, 10)
+      : ""
+  }
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      profile: {
+        ...formData.profile,
+        date_of_birth: e.target.value,
+      },
+    })
+  }
+/>
+</div>
+
+<div className="form-group">
+  <label>Address</label>
+  <textarea
+    placeholder="Enter member's address"
+    value={formData.profile.address}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        profile: {
+          ...formData.profile,
+          address: e.target.value,
+        },
+      })
+    }
+  />
+</div>
 
       <div className="form-actions">
         <button type="submit" className="btn btn-primary">
