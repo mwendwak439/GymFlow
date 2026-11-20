@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
-from .models import User, MemberProfile
+from .models import User, MemberProfile, TrainerProfile
 
 
 class MemberProfileSerializer(serializers.ModelSerializer):
@@ -154,3 +154,78 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("This account is deactivated.")
         data["user"] = user
         return data
+class TrainerProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TrainerProfile
+        fields = [
+            "specialization",
+            "experience_years",
+            "bio",
+            "status",
+            "created_at",
+        ]
+        read_only_fields = ["status", "created_at"]
+
+class AdminTrainerSerializer(serializers.ModelSerializer):
+
+    trainer_profile = TrainerProfileSerializer(required=False)
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "phone",
+            "role",
+            "is_active",
+            "date_joined",
+            "trainer_profile",
+        ]
+
+        read_only_fields = [
+            "id",
+            "role",
+            "date_joined",
+        ]
+
+        extra_kwargs = {
+            "first_name": {"required": True, "allow_blank": False},
+            "last_name": {"required": True, "allow_blank": False},
+        }
+
+    def create(self, validated_data):
+        profile_data = validated_data.pop("trainer_profile", {})
+
+        user = User(**validated_data)
+        user.set_unusable_password()
+        user.role = User.Role.TRAINER
+        user.save()
+
+        TrainerProfile.objects.create(
+            user=user,
+            **profile_data
+        )
+
+        return user
+
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop("trainer_profile", None)
+
+        for attribute, value in validated_data.items():
+            setattr(instance, attribute, value)
+
+        instance.save()
+
+        if profile_data is not None:
+            profile = instance.trainer_profile
+
+            for attribute, value in profile_data.items():
+                setattr(profile, attribute, value)
+
+            profile.save()
+
+        return instance

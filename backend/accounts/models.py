@@ -7,6 +7,7 @@ class User(AbstractUser):
     class Role(models.TextChoices):
         ADMIN = "ADMIN", "Admin"
         MEMBER = "MEMBER", "Member"
+        TRAINER = "TRAINER", "Trainer"
 
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20, blank=True)
@@ -54,3 +55,29 @@ class MemberProfile(models.Model):
     def __str__(self):
         return f"Profile of {self.user}"
     
+class TrainerProfile(models.Model):
+
+    class Status(models.TextChoices):
+        ACTIVE = "ACTIVE", "Active"
+        INACTIVE = "INACTIVE", "Inactive"
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="trainer_profile"
+    )
+
+    specialization = models.CharField(max_length=100, blank=True)
+    experience_years = models.PositiveIntegerField(default=0)
+    bio = models.TextField(blank=True)
+
+    status = models.CharField(
+        max_length=10,
+        choices=Status.choices,
+        default=Status.ACTIVE
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Trainer Profile of {self.user}"

@@ -7,6 +7,8 @@ from .views import (
     RegisterView,
     MemberListCreateView,
     MemberDetailView,
+    TrainerListCreateView,
+    TrainerDetailView
 )
 urlpatterns = [
     path("csrf/", CsrfView.as_view()),
@@ -15,5 +17,7 @@ urlpatterns = [
     path("logout/", LogoutView.as_view()),
     path("me/", MeView.as_view()),
     path("members/", MemberListCreateView.as_view(), name="member-list-create"),
-    path("members/<int:pk>/", MemberDetailView.as_view(), name="member-detail")
+    path("members/<int:pk>/", MemberDetailView.as_view(), name="member-detail"),
+    path("trainers/", TrainerListCreateView.as_view(), name="trainer-list-create"),
+    path("trainers/<int:pk>/", TrainerDetailView.as_view(), name="trainer-detail"),
 ]

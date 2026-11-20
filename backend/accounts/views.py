@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import LoginSerializer, RegisterSerializer, UserSerializer
-from .serializers import AdminMemberSerializer
+from .serializers import AdminMemberSerializer,AdminTrainerSerializer
 from .permissions import IsAdminUser
 from .models import User
 from .pagination import MemberPagination
@@ -99,3 +99,43 @@ class MemberDetailView(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return User.objects.filter(role=User.Role.MEMBER)
+class TrainerListCreateView(generics.ListCreateAPIView):
+    """
+    Admin can view all trainers and register new trainers.
+    """
+
+    serializer_class = AdminTrainerSerializer
+    permission_classes = [IsAdminUser]
+    pagination_class = MemberPagination
+    queryset = User.objects.filter(role=User.Role.TRAINER)
+
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    filterset_fields = ["is_active"]
+
+    search_fields = [
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "phone",
+    ]
+
+    ordering_fields = ["date_joined", "first_name", "last_name"]
+    ordering = ["-date_joined"]
+
+
+class TrainerDetailView(generics.RetrieveUpdateAPIView):
+    """
+    Admin can view and update a specific trainer.
+    """
+
+    serializer_class = AdminTrainerSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        return User.objects.filter(role=User.Role.TRAINER)
