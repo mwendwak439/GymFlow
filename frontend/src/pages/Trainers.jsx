@@ -11,6 +11,8 @@ export default function Trainers() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [showForm, setShowForm] = useState(false);
   const [editingTrainer, setEditingTrainer] = useState(null);
+  const [selectedTrainer, setSelectedTrainer] = useState(null);
+const [profileLoading, setProfileLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -140,6 +142,66 @@ const handleEditClick = (trainer) => {
 
   setShowForm(true);
 };
+
+const filteredTrainers = trainers.filter((trainer) => {
+  const searchTerm = search.toLowerCase();
+
+  const fullName = `${trainer.first_name} ${trainer.last_name}`.toLowerCase();
+
+  const matchesSearch =
+    fullName.includes(searchTerm) ||
+    trainer.email?.toLowerCase().includes(searchTerm) ||
+    trainer.username?.toLowerCase().includes(searchTerm) ||
+    trainer.trainer_profile?.specialization?.toLowerCase().includes(searchTerm);
+
+  const matchesStatus =
+    statusFilter === "all" ||
+    (statusFilter === "active" && trainer.is_active) ||
+    (statusFilter === "inactive" && !trainer.is_active);
+
+  return matchesSearch && matchesStatus;
+});
+
+const handleToggleStatus = async (trainer) => {
+  try {
+    const response = await api.patch(
+      `/trainers/${trainer.id}/`,
+      {
+        is_active: !trainer.is_active,
+      }
+    );
+
+    setTrainers((prev) =>
+      prev.map((item) =>
+        item.id === trainer.id ? response.data : item
+      )
+    );
+
+    setError("");
+
+  } catch (err) {
+    console.error("Error updating trainer status:", err);
+    setError("Failed to update trainer status. Please try again.");
+  }
+};
+
+
+const handleViewTrainer = async (trainer) => {
+  try {
+    setProfileLoading(true);
+    setError("");
+
+    const response = await api.get(`/trainers/${trainer.id}/`);
+
+    setSelectedTrainer(response.data);
+
+  } catch (err) {
+    console.error("Error loading trainer profile:", err);
+    setError("Failed to load trainer profile.");
+  } finally {
+    setProfileLoading(false);
+  }
+};
  return (
   <div className="trainers-page">
 
@@ -148,17 +210,33 @@ const handleEditClick = (trainer) => {
         <h1>Trainer Management</h1>
         <p>Manage your gym trainers and their professional information.</p>
       </div>
+<button onClick={() => {
+  setEditingTrainer(null);
 
-      <button onClick={() => setShowForm(true)}>
-        + Add Trainer
-      </button>
+  setFormData({
+    first_name: "",
+    last_name: "",
+    username: "",
+    email: "",
+    phone: "",
+    trainer_profile: {
+      specialization: "",
+      experience_years: 0,
+      bio: "",
+    },
+  });
+
+  setShowForm(true);
+}}>
+  + Add Trainer
+</button>
     </div>
 {showForm && (
   <div className="trainer-modal-overlay">
     <div className="trainer-modal">
-      <h2>Register New Trainer</h2>
-
-      <form onSubmit={handleAddTrainer}>
+     <h2>{editingTrainer ? "Edit Trainer" : "Register New Trainer"}</h2> 
+<form onSubmit={editingTrainer ? handleEditTrainer : handleAddTrainer}>
+     
 
         <div className="trainer-form-grid">
 
@@ -277,30 +355,138 @@ const handleEditClick = (trainer) => {
         </div>
 
         <div className="trainer-form-actions">
-          <button type="submit">Register Trainer</button>
+          <button type="submit">
+  {editingTrainer ? "Save Changes" : "Register Trainer"}
+</button>
 
-          <button
-            type="button"
-            onClick={() => setShowForm(false)}
-          >
-            Cancel
-          </button>
+      <button
+  type="button"
+  onClick={() => {
+    setShowForm(false);
+    setEditingTrainer(null);
+  }}
+>
+  Cancel
+</button>   
         </div>
 
       </form>
     </div>
   </div>
 )}
+    
+{(profileLoading || selectedTrainer) && (
+  <div className="trainer-modal-overlay">
+    <div className="trainer-modal trainer-profile-modal">
+
+      <h2>Trainer Profile</h2>
+
+      {profileLoading ? (
+        <p>Loading trainer profile...</p>
+      ) : selectedTrainer && (
+        <>
+          <div className="trainer-profile-details">
+
+            <div>
+              <strong>Full Name</strong>
+              <p>
+                {selectedTrainer.first_name} {selectedTrainer.last_name}
+              </p>
+            </div>
+
+            <div>
+              <strong>Username</strong>
+              <p>{selectedTrainer.username}</p>
+            </div>
+
+            <div>
+              <strong>Email</strong>
+              <p>{selectedTrainer.email}</p>
+            </div>
+
+            <div>
+              <strong>Phone</strong>
+              <p>{selectedTrainer.phone || "Not provided"}</p>
+            </div>
+
+            <div>
+              <strong>Specialization</strong>
+              <p>
+                {selectedTrainer.trainer_profile?.specialization || "Not specified"}
+              </p>
+            </div>
+
+            <div>
+              <strong>Experience</strong>
+              <p>
+                {selectedTrainer.trainer_profile?.experience_years || 0} years
+              </p>
+            </div>
+
+            <div>
+              <strong>Status</strong>
+              <p>
+                {selectedTrainer.is_active ? "Active" : "Inactive"}
+              </p>
+            </div>
+
+            <div>
+              <strong>Professional Bio</strong>
+              <p>
+                {selectedTrainer.trainer_profile?.bio || "No bio provided"}
+              </p>
+            </div>
+
+          </div>
+
+          <div className="trainer-form-actions">
+            <button
+              type="button"
+              onClick={() => setSelectedTrainer(null)}
+            >
+              Close Profile
+            </button>
+          </div>
+        </>
+      )}
+
+    </div>
+  </div>
+)}
+
+    <div className="trainers-filters">
+  <input
+    type="text"
+    placeholder="Search trainers..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+  />
+
+  <select
+    value={statusFilter}
+    onChange={(e) => setStatusFilter(e.target.value)}
+  >
+    <option value="all">All Trainers</option>
+    <option value="active">Active Trainers</option>
+    <option value="inactive">Inactive Trainers</option>
+  </select>
+</div>
+    
     {error && <p className="error-message">{error}</p>}
 
-    {loading ? (
-      <p>Loading trainers...</p>
-    ) : trainers.length === 0 ? (
-      <div className="empty-state">
-        <h3>No trainers found</h3>
-        <p>Start by registering your first gym trainer.</p>
-      </div>
-    ) : (
+  {loading ? (
+  <p>Loading trainers...</p>
+) : trainers.length === 0 ? (
+  <div className="empty-state">
+    <h3>No trainers found</h3>
+    <p>Start by registering your first gym trainer.</p>
+  </div>
+) : filteredTrainers.length === 0 ? (
+  <div className="empty-state">
+    <h3>No matching trainers</h3>
+    <p>Try changing your search or status filter.</p>
+  </div>
+) : (
 
       <div className="trainers-table-container">
         <table className="trainers-table">
@@ -317,7 +503,7 @@ const handleEditClick = (trainer) => {
           </thead>
 
           <tbody>
-            {trainers.map((trainer) => (
+         {filteredTrainers.map((trainer) => (
               <tr key={trainer.id}>
                 <td>
                   {trainer.first_name} {trainer.last_name}
@@ -338,9 +524,26 @@ const handleEditClick = (trainer) => {
                   </span>
                 </td>
                 <td>
-                  <button onClick={() => setEditingTrainer(trainer)}>
-                    Edit
-                  </button>
+          <td>
+  <div className="trainer-actions">
+
+    <button onClick={() => handleViewTrainer(trainer)}>
+      View
+    </button>
+
+    <button onClick={() => handleEditClick(trainer)}>
+      Edit
+    </button>
+
+    <button
+      onClick={() => handleToggleStatus(trainer)}
+      className={trainer.is_active ? "deactivate-btn" : "activate-btn"}
+    >
+      {trainer.is_active ? "Deactivate" : "Activate"}
+    </button>
+
+  </div>
+</td>
                 </td>
               </tr>
             ))}

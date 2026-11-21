@@ -220,12 +220,24 @@ class AdminTrainerSerializer(serializers.ModelSerializer):
 
         instance.save()
 
+        profile = getattr(instance, "trainer_profile", None)
+
         if profile_data is not None:
-            profile = instance.trainer_profile
+            if profile:
+                for attribute, value in profile_data.items():
+                    setattr(profile, attribute, value)
+            else:
+                profile = TrainerProfile.objects.create(
+                    user=instance,
+                    **profile_data
+                )
 
-            for attribute, value in profile_data.items():
-                setattr(profile, attribute, value)
-
+        if profile:
+            profile.status = (
+                TrainerProfile.Status.ACTIVE
+                if instance.is_active
+                else TrainerProfile.Status.INACTIVE
+            )
             profile.save()
 
         return instance

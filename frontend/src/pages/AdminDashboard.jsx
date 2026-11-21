@@ -216,6 +216,10 @@ setStats(response.data);
           Manage Attendance
         </Link>
 
+        <Link to="/admin/trainers" className="btn btn-primary">
+  Manage Trainers
+</Link>
+
         <button className="btn btn-primary" onClick={logout}>
           Log out
         </button>

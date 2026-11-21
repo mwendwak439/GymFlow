@@ -12,6 +12,7 @@ import Workouts from "./pages/workouts";
 import Attendance from "./pages/Attendance";
 import MemberPlans from "./pages/MemberPlans";
 import MemberSubscriptionHistory from "./pages/MemberSubscriptionHistory";
+import Trainers from "./pages/Trainers";
 
 export default function App() {
   return (
@@ -106,6 +107,15 @@ export default function App() {
 <Route
   path="/member/subscription-history"
   element={<MemberSubscriptionHistory />}
+/>
+
+<Route
+  path="/admin/trainers"
+  element={
+    <ProtectedRoute role="ADMIN">
+      <Trainers />
+    </ProtectedRoute>
+  }
 />
 </Routes>
   );
