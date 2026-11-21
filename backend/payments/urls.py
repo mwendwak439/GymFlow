@@ -3,6 +3,7 @@ from .views import (
     InitiateSTKPushView,
     MpesaCallbackView,
     PaymentStatusView,
+    PaymentHistoryView
 )
 
 
@@ -22,4 +23,9 @@ urlpatterns = [
     PaymentStatusView.as_view(),
     name="payment-status"
      ),
+     path(
+    "history/",
+    PaymentHistoryView.as_view(),
+    name="payment-history"
+),
 ]

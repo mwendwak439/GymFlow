@@ -220,7 +220,9 @@ setStats(response.data);
   Manage Trainers
 </Link>
 
-        <button className="btn btn-primary" onClick={logout}>
+<Link to="/admin/payments" className="btn btn-primary"> Payment History </Link>
+
+        <button className="btn btn-primary"  onClick={logout}>
           Log out
         </button>
       </div>

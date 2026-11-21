@@ -7,14 +7,15 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
-from rest_framework import status
+from rest_framework import status,generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 
 from memberships.models import Subscription
 from .models import Payment
 from .mpesa import initiate_stk_push
+from .serializers import PaymentHistorySerializer
 
 
 class InitiateSTKPushView(APIView):
@@ -250,3 +251,12 @@ class PaymentStatusView(APIView):
             "receipt_number": payment.mpesa_receipt_number,
             "result_description": payment.result_description,
         })
+class PaymentHistoryView(generics.ListAPIView):
+        permission_classes = [IsAdminUser]
+        serializer_class = PaymentHistorySerializer
+
+        queryset = Payment.objects.select_related(
+            "subscription",
+            "subscription__member",
+            "subscription__plan"
+        ).order_by("-created_at")
