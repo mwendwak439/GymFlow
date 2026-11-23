@@ -45,6 +45,15 @@ const handleEditClick = (member) => {
   setShowForm(true);
 };
 
+const fetchMembers = async () => {
+  try {
+    const response = await api.get("/members/");
+    setMembers(response.data.results || []);
+  } catch (err) {
+    setError("Failed to load members.");
+  }
+};
+
 const handleViewProfile = async (member) => {
   setProfileLoading(true);
   setSelectedMember(null);

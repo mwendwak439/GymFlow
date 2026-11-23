@@ -26,6 +26,15 @@ const [exercises, setExercises] = useState([]);
 const [selectedWorkout, setSelectedWorkout] = useState(null);
 const [showExerciseForm, setShowExerciseForm] = useState(false);
 const[editingExercise,setEditingExercise]=useState(null)
+// Workout Assignment Management
+const [members, setMembers] = useState([]);
+const [showAssignmentForm, setShowAssignmentForm] = useState(false);
+const [assignmentForm, setAssignmentForm] = useState({
+  workout: "",
+  member: "",
+  start_date: "",
+  end_date: "",
+});
 const [exerciseForm, setExerciseForm] = useState({
   name: "",
   description: "",
@@ -33,6 +42,8 @@ const [exerciseForm, setExerciseForm] = useState({
   repetitions: "",
   duration_minutes: "",
 });
+const [assignments, setAssignments] = useState([]);
+const [assignmentLoading, setAssignmentLoading] = useState(true);
 
   const fetchWorkouts = async () => {
     try {
@@ -44,6 +55,15 @@ const [exerciseForm, setExerciseForm] = useState({
       setLoading(false);
     }
   };
+
+  const fetchMembers = async () => {
+  try {
+    const response = await api.get("/members/");
+    setMembers(response.data.results || []);
+  } catch (err) {
+    setError("Failed to load members.");
+  }
+};
 
 const fetchExercises = async (workoutId) => {
   try {
@@ -149,6 +169,15 @@ const handleExerciseSubmit = async (e) => {
   });
 };
 
+const handleAssignmentChange = (e) => {
+  const { name, value } = e.target;
+
+  setAssignmentForm({
+    ...assignmentForm,
+    [name]: value,
+  });
+};
+
 const handleEdit = (workout) => {
   setEditingWorkout(workout);
   setFormData({
@@ -212,10 +241,60 @@ const handleSubmit = async (e) => {
   }
 };
 
+  const fetchAssignments = async () => {
+  try {
+    const response = await api.get("/workout-assignments/");
+    setAssignments(response.data.results || response.data);
+  } catch (err) {
+    setError("Failed to load workout assignments.");
+  } finally {
+    setAssignmentLoading(false);
+  }
+};
 
-  useEffect(() => {
-    fetchWorkouts();
-  }, []);
+
+
+useEffect(() => {
+  fetchWorkouts();
+  fetchAssignments();
+
+  if (user?.role === "ADMIN") {
+    fetchMembers();
+  }
+}, [user?.role]);
+
+
+const handleAssignmentSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+
+  try {
+    const data = {
+      ...assignmentForm,
+      workout: Number(assignmentForm.workout),
+      member: Number(assignmentForm.member),
+      end_date: assignmentForm.end_date || null,
+    };
+
+    await api.post("/workout-assignments/", data);
+
+    setAssignmentForm({
+      workout: "",
+      member: "",
+      start_date: "",
+      end_date: "",
+    });
+
+    setShowAssignmentForm(false);
+    await fetchAssignments();
+
+  } catch (err) {
+    setError(
+      err.response?.data?.detail ||
+      "Failed to assign workout."
+    );
+  }
+};
 
   if (loading) return <p>Loading workouts...</p>;
 
@@ -226,6 +305,83 @@ const handleSubmit = async (e) => {
         Explore and manage gym workout programs.
       </p>
 
+{user?.role === "ADMIN" && (
+  <button
+    onClick={() => setShowAssignmentForm(!showAssignmentForm)}
+  >
+    {showAssignmentForm ? "Close Assignment Form" : "Assign Workout"}
+  </button>
+)}
+
+{showAssignmentForm && user?.role === "ADMIN" && (
+  <form
+    onSubmit={handleAssignmentSubmit}
+    className="workout-form"
+  >
+    <h2>Assign Workout to Member</h2>
+
+    <label>Workout</label>
+    <select
+      name="workout"
+      value={assignmentForm.workout}
+      onChange={handleAssignmentChange}
+      required
+    >
+      <option value="">Select workout</option>
+
+      {workouts
+        .filter((workout) => workout.is_active)
+        .map((workout) => (
+          <option key={workout.id} value={workout.id}>
+            {workout.name}
+          </option>
+        ))}
+    </select>
+
+    <label>Member</label>
+    <select
+      name="member"
+      value={assignmentForm.member}
+      onChange={handleAssignmentChange}
+      required
+    >
+      <option value="">Select member</option>
+
+      {members.map((member) => (
+        <option key={member.id} value={member.id}>
+          {member.username}
+        </option>
+      ))}
+    </select>
+
+    <label>Start Date</label>
+    <input
+      type="date"
+      name="start_date"
+      value={assignmentForm.start_date}
+      onChange={handleAssignmentChange}
+      required
+    />
+
+    <label>End Date (optional)</label>
+    <input
+      type="date"
+      name="end_date"
+      value={assignmentForm.end_date}
+      onChange={handleAssignmentChange}
+      min={assignmentForm.start_date || undefined}
+    />
+
+    <button type="submit">Assign Workout</button>
+
+    <button
+      type="button"
+      onClick={() => setShowAssignmentForm(false)}
+    >
+      Cancel
+    </button>
+  </form>
+)}
      
 {user?.role === "ADMIN" && (
   <button onClick={() => setShowForm(!showForm)}>
@@ -350,6 +506,65 @@ const handleSubmit = async (e) => {
       {workouts.length === 0 && (
         <p>No workouts available yet.</p>
       )}
+      
+ <div className="workout-assignments-section">
+        <h2>
+          {user?.role === "ADMIN"
+            ? "Workout Assignments"
+            : "My Assigned Workouts"}
+        </h2>
+
+        {assignmentLoading ? (
+          <p>Loading assignments...</p>
+        ) : assignments.length === 0 ? (
+          <p>No workout assignments yet.</p>
+        ) : (
+          <div className="workouts-grid">
+            {assignments.map((assignment) => (
+              <div className="workout-card" key={assignment.id}>
+                <h3>{assignment.workout_name}</h3>
+
+                {user?.role === "ADMIN" && (
+                  <p>Member: {assignment.member_name}</p>
+                )}
+
+                <p>Start Date: {assignment.start_date}</p>
+
+                <p>
+                  End Date: {assignment.end_date || "Not specified"}
+                </p>
+
+                <p>Status: {assignment.status}</p>
+                <div className="assigned-exercises">
+  <h4>Exercises</h4>
+
+  {assignment.workout_details?.exercises?.length > 0 ? (
+    assignment.workout_details.exercises.map((exercise) => (
+      <div key={exercise.id}>
+        <h5>{exercise.name}</h5>
+        <p>{exercise.description}</p>
+        <p>Sets: {exercise.sets}</p>
+        <p>
+          Repetitions: {exercise.repetitions || "Not specified"}
+        </p>
+        <p>
+          Duration: {exercise.duration_minutes
+            ? `${exercise.duration_minutes} minutes`
+            : "Not specified"}
+        </p>
+      </div>
+    ))
+  ) : (
+    <p>No exercises added to this workout yet.</p>
+  )}
+</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+
 
       {selectedWorkout && user?.role === "ADMIN" && (
   <div className="workout-form">

@@ -36,7 +36,25 @@ class WorkoutAssignmentSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    workout_details = WorkoutSerializer(
+    source="workout",
+    read_only=True
+    )
+
     class Meta:
         model = WorkoutAssignment
-        fields = "__all__"
+        fields = [
+            "id",
+            "workout",
+            "workout_name",
+            "workout_details",
+            "member",
+            "member_name",
+            "assigned_by",
+            "assigned_by_name",
+            "start_date",
+            "end_date",
+            "status",
+            "assigned_at",
+        ]
         read_only_fields = ["id", "assigned_at", "assigned_by"]

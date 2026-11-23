@@ -2,7 +2,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from accounts.permissions import IsAdminUser
+from accounts.permissions import IsAdminUser,IsAdminOrMember
 from .models import Workout, Exercise, WorkoutAssignment
 from .serializers import (
     WorkoutSerializer,
@@ -49,13 +49,18 @@ class ExerciseDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class WorkoutAssignmentListCreateView(generics.ListCreateAPIView):
     serializer_class = WorkoutAssignmentSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminOrMember]
 
     def get_queryset(self):
         queryset = WorkoutAssignment.objects.select_related(
             "workout", "member", "assigned_by"
         ).all().order_by("-assigned_at")
 
+        # Members can only see their own assignments
+        if self.request.user.role == "MEMBER":
+            return queryset.filter(member=self.request.user)
+
+        # Admins can filter assignments by member
         member_id = self.request.query_params.get("member")
 
         if member_id:
@@ -68,8 +73,15 @@ class WorkoutAssignmentListCreateView(generics.ListCreateAPIView):
 
 
 class WorkoutAssignmentDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = WorkoutAssignment.objects.select_related(
-        "workout", "member", "assigned_by"
-    ).all()
     serializer_class = WorkoutAssignmentSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminOrMember]
+
+    def get_queryset(self):
+        queryset = WorkoutAssignment.objects.select_related(
+            "workout", "member", "assigned_by"
+        ).all()
+
+        if self.request.user.role == "MEMBER":
+            return queryset.filter(member=self.request.user)
+
+        return queryset
