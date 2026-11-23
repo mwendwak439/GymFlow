@@ -1,6 +1,9 @@
 
 import { Navigate, Route, Routes } from "react-router-dom";
+
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminLayout from "./components/AdminLayout";
+
 import AdminDashboard from "./pages/AdminDashboard";
 import Login from "./pages/Login";
 import MemberDashboard from "./pages/MemberDashboard";
@@ -18,27 +21,30 @@ import PaymentHistory from "./pages/PaymentHistory";
 export default function App() {
   return (
     <Routes>
+      {/* Public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
+      {/* Admin routes with shared sidebar */}
       <Route
         path="/admin"
         element={
           <ProtectedRoute role="ADMIN">
-            <AdminDashboard />
+            <AdminLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route index element={<AdminDashboard />} />
+        <Route path="members" element={<Members />} />
+        <Route path="membership-plans" element={<MembershipPlans />} />
+        <Route path="subscriptions" element={<Subscriptions />} />
+        <Route path="trainers" element={<Trainers />} />
+        <Route path="payments" element={<PaymentHistory />} />
+        <Route path="attendance" element={<Attendance />} />
+        <Route path="workouts" element={<Workouts />} />
+      </Route>
 
-      <Route
-        path="/admin/members"
-        element={
-          <ProtectedRoute role="ADMIN">
-            <Members />
-          </ProtectedRoute>
-        }
-      />
-
+      {/* Member routes */}
       <Route
         path="/member"
         element={
@@ -48,84 +54,46 @@ export default function App() {
         }
       />
 
+      <Route
+        path="/member/plans"
+        element={
+          <ProtectedRoute role="MEMBER">
+            <MemberPlans />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/member/subscription-history"
+        element={
+          <ProtectedRoute role="MEMBER">
+            <MemberSubscriptionHistory />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Shared workout route */}
+      <Route
+        path="/workouts"
+        element={
+          <ProtectedRoute>
+            <Workouts />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Member attendance */}
+      <Route
+        path="/attendance"
+        element={
+          <ProtectedRoute role="MEMBER">
+            <Attendance />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Fallback */}
       <Route path="*" element={<Navigate to="/login" replace />} />
-    
-    <Route
-  path="/admin/membership-plans"
-  element={
-    <ProtectedRoute role="ADMIN">
-      <MembershipPlans />
-    </ProtectedRoute>
-  }
-/>
-    
-
-    <Route
-  path="/admin/subscriptions"
-  element={
-    <ProtectedRoute role="ADMIN">
-      <Subscriptions />
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/workouts"
-  element={
-    <ProtectedRoute>
-      <Workouts />
-    </ProtectedRoute>
-  }
-/>
-
-
-<Route
-  path="/attendance"
-  element={
-    <ProtectedRoute role="MEMBER">
-      <Attendance />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/admin/attendance"
-  element={
-    <ProtectedRoute role="ADMIN">
-      <Attendance />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/member/plans"
-  element={
-    <ProtectedRoute role="MEMBER">
-      <MemberPlans />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/member/subscription-history"
-  element={<MemberSubscriptionHistory />}
-/>
-
-<Route
-  path="/admin/trainers"
-  element={
-    <ProtectedRoute role="ADMIN">
-      <Trainers />
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/admin/payments"
-  element={
-    <ProtectedRoute role="ADMIN">
-      <PaymentHistory />
-    </ProtectedRoute>
-  }
-/>
-</Routes>
+    </Routes>
   );
 }

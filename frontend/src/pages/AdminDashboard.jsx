@@ -1,15 +1,17 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
 import api from "../services/api";
+import { Link } from "react-router-dom";
 import RevenueChart from "../components/RevenueChart";
 import MemberGrowthChart from "../components/MemberGrowthChart";
 import PlanPerformanceChart from "../components/PlanPerformanceChart";
 import ExpiryAlerts from "../components/ExpiryAlerts";  
+import UrgentExpiryAlerts from "../components/UrgentExpiryAlerts";
+import RecentActivity from "../components/RecentActivity";
 
 export default function AdminDashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const [stats, setStats] = useState(null);
   console.log("Plan performance:", stats?.plan_performance);
@@ -39,10 +41,54 @@ setStats(response.data);
   };
 
   return (
-    <div className="placeholder">
-      <h1>Admin Dashboard</h1>
+   <div className="dashboard-page">
+  <div className="dashboard-heading">
+    <div>
+      <span className="dashboard-eyebrow">GYMFLOW OVERVIEW</span>
+      <h1>Dashboard</h1>
+      <p>
+        Welcome back, {user?.first_name || user?.username}.
+        Here's what's happening at your gym today.
+      </p>
+    </div>
+  </div>
+     <div className="dashboard-quick-actions">
+  <h2>Quick Actions</h2>
 
-      <p>Welcome, {user?.first_name || user?.username}.</p>
+  <div className="quick-actions-grid">
+    <Link to="/admin/members" className="quick-action-card">
+      <span>＋</span>
+      <div>
+        <h3>Manage Members</h3>
+        <p>Register and manage gym members</p>
+      </div>
+    </Link>
+
+    <Link to="/admin/membership-plans" className="quick-action-card">
+      <span>▤</span>
+      <div>
+        <h3>Membership Plans</h3>
+        <p>Create and manage gym plans</p>
+      </div>
+    </Link>
+
+    <Link to="/admin/payments" className="quick-action-card">
+      <span>↗</span>
+      <div>
+        <h3>View Payments</h3>
+        <p>Track member payments</p>
+      </div>
+    </Link>
+
+    <Link to="/admin/trainers" className="quick-action-card">
+      <span>♟</span>
+      <div>
+        <h3>Manage Trainers</h3>
+        <p>View and manage gym trainers</p>
+      </div>
+    </Link>
+  </div>
+</div>
 
       <h2>Gym Overview</h2>
 
@@ -107,10 +153,17 @@ setStats(response.data);
   <PlanPerformanceChart
     data={stats.plan_performance || []}
   />
+  
 )}
+<RecentActivity activities={stats.recent_activity || []} />
 {stats && (
   <ExpiryAlerts
     subscriptions={stats.expiring_subscriptions || []}
+  />
+)}
+{stats && (
+  <UrgentExpiryAlerts
+    subscriptions={stats.urgent_expiring_subscriptions || []}
   />
 )}
           <h2>Recent Payments</h2>
@@ -193,39 +246,6 @@ setStats(response.data);
         </>
       ) : null}
 
-      <h2>Management</h2>
-
-      <div className="dashboard-actions">
-        <Link to="/admin/members" className="btn btn-primary">
-          Manage Members
-        </Link>
-
-        <Link to="/admin/membership-plans" className="btn btn-primary">
-          Manage Membership Plans
-        </Link>
-
-        <Link to="/admin/subscriptions" className="btn btn-primary">
-          Manage Subscriptions
-        </Link>
-
-        <Link to="/workouts" className="btn btn-primary">
-          Manage Workouts
-        </Link>
-
-        <Link to="/admin/attendance" className="btn btn-primary">
-          Manage Attendance
-        </Link>
-
-        <Link to="/admin/trainers" className="btn btn-primary">
-  Manage Trainers
-</Link>
-
-<Link to="/admin/payments" className="btn btn-primary"> Payment History </Link>
-
-        <button className="btn btn-primary"  onClick={logout}>
-          Log out
-        </button>
-      </div>
     </div>
   );
 }

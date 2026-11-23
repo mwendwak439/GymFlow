@@ -1,8 +1,18 @@
+
 export default function ExpiryAlerts({ subscriptions = [] }) {
   return (
     <div className="expiry-alerts">
-      <h2>Membership Expiry Alerts</h2>
-      <p>Subscriptions expiring within the next 7 days</p>
+      <div className="alert-heading">
+        <div>
+          <span className="alert-eyebrow">MEMBERSHIP MONITORING</span>
+          <h2>Membership Expiry Alerts</h2>
+          <p>Subscriptions expiring within the next 7 days</p>
+        </div>
+
+        <span className="alert-count">
+          {subscriptions.length} Alerts
+        </span>
+      </div>
 
       {subscriptions.length === 0 ? (
         <div className="no-expiry-alerts">

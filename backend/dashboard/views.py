@@ -68,6 +68,15 @@ class AdminDashboardStatsView(APIView):
             end_date__lte=expiry_limit
         ).select_related("member", "plan").order_by("end_date")
 
+                # Urgent memberships expiring within the next 3 days
+        urgent_expiry_limit = today + timedelta(days=3)
+
+        urgent_expiring_subscriptions = Subscription.objects.filter(
+            status="ACTIVE",
+            end_date__gte=today,
+            end_date__lte=urgent_expiry_limit
+        ).select_related("member", "plan").order_by("end_date")
+
         total_revenue = Payment.objects.filter(
             status="SUCCESS"
         ).aggregate(
@@ -157,6 +166,74 @@ class AdminDashboardStatsView(APIView):
                 "members": new_members
             })
 
+                # Recent activity: latest member registrations
+        recent_member_activity = User.objects.filter(
+            role="MEMBER"
+        ).order_by("-date_joined")[:5]
+
+        # Recent activity: latest subscriptions
+        recent_subscription_activity = Subscription.objects.select_related(
+            "member",
+            "plan"
+        ).order_by("-created_at")[:5]
+
+        # Recent activity: latest payments
+        recent_payment_activity = Payment.objects.select_related(
+            "subscription__member",
+            "subscription__plan"
+        ).order_by("-created_at")[:10]
+
+                # Combine all recent activities
+        recent_activity = []
+
+        for member in recent_member_activity:
+            recent_activity.append({
+                "id": f"member-{member.id}",
+                "type": "MEMBER_REGISTERED",
+                "title": "New member registered",
+                "description": f"{member.username} joined GymFlow",
+                "date": member.date_joined,
+            })
+
+        for subscription in recent_subscription_activity:
+            recent_activity.append({
+                "id": f"subscription-{subscription.id}",
+                "type": "SUBSCRIPTION_CREATED",
+                "title": "New subscription",
+                "description": (
+                    f"{subscription.member.username} selected "
+                    f"{subscription.plan.name} plan"
+                ),
+                "date": subscription.created_at,
+            })
+
+        for payment in recent_payment_activity:
+            recent_activity.append({
+                "id": f"payment-{payment.id}",
+                "type": f"PAYMENT_{payment.status}",
+                "title": (
+                    "Payment successful"
+                    if payment.status == "SUCCESS"
+                    else "Payment failed"
+                    if payment.status == "FAILED"
+                    else "Payment pending"
+                ),
+                "description": (
+                    f"{payment.subscription.member.username} - "
+                    f"KES {payment.amount}"
+                ),
+                "date": payment.created_at,
+            })
+
+        # Sort activities from newest to oldest
+        recent_activity.sort(
+            key=lambda activity: activity["date"],
+            reverse=True
+        )
+
+        # Keep the latest 10 activities
+        recent_activity = recent_activity[:10]
+
         # Recent dashboard activity
         recent_payments = Payment.objects.select_related(
             "subscription__member",
@@ -195,6 +272,16 @@ class AdminDashboardStatsView(APIView):
                 }
                 for subscription in expiring_subscriptions
             ],
+
+            "urgent_expiring_subscriptions": [
+                {
+                    "id": subscription.id,
+                    "member": subscription.member.username,
+                    "plan": subscription.plan.name,
+                    "end_date": subscription.end_date,
+                }
+                for subscription in urgent_expiring_subscriptions
+            ],
             "recent_payments": [
                 {
                     "id": payment.id,
@@ -216,5 +303,7 @@ class AdminDashboardStatsView(APIView):
                     "date_joined": member.date_joined,
                 }
                 for member in recent_members
+           
             ],
+            "recent_activity": recent_activity,
         })
