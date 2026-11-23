@@ -1105,3 +1105,168 @@ body {
     align-items: flex-start;
   }
 }
+
+/* =================================
+   GYMFLOW AUTHENTICATION - DARK IRON
+================================= */
+
+.auth-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at top, #202020 0%, #0A0A0A 55%);
+}
+
+/* Login card */
+
+.auth-card {
+  width: 100%;
+  max-width: 430px;
+  padding: 40px;
+  background: #141414;
+  border: 1px solid #303030;
+  border-radius: 16px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+/* Branding */
+
+.auth-card .brand {
+  color: #C6FF00;
+  font-size: 32px;
+  font-weight: 950;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.auth-card h2 {
+  color: #FFFFFF;
+  font-size: 23px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* Labels */
+
+.auth-card label {
+  display: block;
+  color: #CCCCCC;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+/* Inputs */
+
+.auth-card input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  background: #1E1E1E;
+  color: #FFFFFF;
+  border: 1px solid #383838;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.auth-card input:focus {
+  outline: none;
+  border-color: #C6FF00;
+  box-shadow: 0 0 0 3px rgba(198, 255, 0, 0.08);
+}
+
+/* Sign in button */
+
+.auth-card .btn-primary {
+  width: 100%;
+  padding: 14px;
+  margin-top: 5px;
+  background: #C6FF00;
+  color: #0A0A0A;
+  border: 1px solid #C6FF00;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.auth-card .btn-primary:hover:not(:disabled) {
+  background: #A8DB00;
+  border-color: #A8DB00;
+  transform: translateY(-2px);
+}
+
+.auth-card .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Register link */
+
+.auth-switch {
+  color: #999999;
+  text-align: center;
+  font-size: 13px;
+  margin-top: 25px;
+}
+
+.auth-switch a {
+  color: #C6FF00;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* Error message */
+
+.auth-card .alert-error {
+  color: #FF7777;
+  background: rgba(255, 85, 85, 0.1);
+  border: 1px solid rgba(255, 85, 85, 0.3);
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+/* Mobile */
+
+@media (max-width: 500px) {
+  .auth-card {
+    padding: 28px 22px;
+  }
+
+  .auth-card .brand {
+    font-size: 28px;
+  }
+}
+/* Login input text visibility */
+.auth-card input {
+  color: #ffffff;
+  background-color: #1a1a1a;
+  caret-color: #C6FF00;
+}
+
+.auth-card input::placeholder {
+  color: #9ca3af;
+}
+
+.auth-card input:focus {
+  color: #ffffff;
+  border-color: #C6FF00;
+  outline: none;
+}

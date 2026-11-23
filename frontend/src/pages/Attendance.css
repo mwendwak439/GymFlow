@@ -1,8 +1,10 @@
 
 .attendance-page {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 25px;
+  color: #f5f5f5;
 }
 
 .attendance-header {
@@ -11,39 +13,42 @@
 
 .attendance-header h1 {
   font-size: 30px;
-  color: #1e293b;
+  color: #C6FF00;
   margin-bottom: 10px;
 }
 
 .attendance-header p {
-  color: #64748b;
+  color: #a3a3a3;
   font-size: 15px;
 }
 
 .attendance-checkin-btn {
-  background: #2563eb;
-  color: white;
+  background: #C6FF00;
+  color: #0A0A0A;
   border: none;
-  padding: 12px 24px;
+  padding: 13px 26px;
   border-radius: 8px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: 0.3s ease;
   margin-bottom: 30px;
 }
 
 .attendance-checkin-btn:hover {
-  background: #1d4ed8;
+  background: #adE600;
+  transform: translateY(-2px);
 }
 
 .attendance-checkin-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .attendance-section h2 {
-  color: #1e293b;
+  color: #ffffff;
+  font-size: 22px;
   margin-bottom: 20px;
 }
 
@@ -54,44 +59,58 @@
 }
 
 .attendance-card {
-  background: white;
+  background: #141414;
   padding: 22px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #292929;
   border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   transition: 0.3s ease;
 }
 
 .attendance-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  border-color: #C6FF00;
+  box-shadow: 0 6px 18px rgba(198, 255, 0, 0.08);
 }
 
 .attendance-card h3 {
-  color: #2563eb;
+  color: #C6FF00;
   font-size: 17px;
   margin-bottom: 15px;
 }
 
 .attendance-card p {
-  color: #475569;
+  color: #d4d4d4;
   font-size: 14px;
-  margin: 8px 0;
+  margin: 10px 0;
+}
+
+.attendance-message {
+  color: #a3a3a3;
+  padding: 20px 0;
 }
 
 .attendance-success {
-  color: #15803d;
+  color: #C6FF00;
+  background: rgba(198, 255, 0, 0.08);
+  border: 1px solid rgba(198, 255, 0, 0.25);
+  padding: 12px 16px;
+  border-radius: 8px;
   margin-bottom: 20px;
 }
 
 .attendance-error {
-  color: #dc2626;
+  color: #FF5555;
+  background: rgba(255, 85, 85, 0.08);
+  border: 1px solid rgba(255, 85, 85, 0.25);
+  padding: 12px 16px;
+  border-radius: 8px;
   margin-bottom: 20px;
 }
 
 @media (max-width: 600px) {
   .attendance-page {
-    padding: 20px;
+    padding: 18px;
     margin: 15px auto;
   }
 

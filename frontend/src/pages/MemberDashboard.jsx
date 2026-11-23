@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import api from "../services/api";
+import "./MemberDashboard.css";
+
 
 export default function MemberDashboard() {
   const { user, logout } = useAuth();
@@ -34,10 +36,12 @@ export default function MemberDashboard() {
   );
 
   return (
-    <div className="placeholder">
+    <div className="member-dashboard">
       <h1>Member Dashboard</h1>
 
-      <p>Welcome, {user.first_name || user.username}.</p>
+     <p className="member-welcome">
+  Welcome back, {user.first_name || user.username}.
+</p>
 
       <div className="dashboard-actions">
         <Link to="/workouts" className="btn btn-primary">

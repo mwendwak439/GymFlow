@@ -49,20 +49,22 @@ export default function Attendance() {
   };
 
   return (
-    <div className="placeholder">
-      <h1>
-        {isAdmin ? "Attendance Management" : "My Attendance"}
-      </h1>
+    <div className="attendance-page">
+      <div className="attendance-header">
+        <h1>
+          {isAdmin ? "Attendance Management" : "My Attendance"}
+        </h1>
 
-      <p>
-        {isAdmin
-          ? "Monitor gym attendance across all members."
-          : "Record and track your gym visits."}
-      </p>
+        <p>
+          {isAdmin
+            ? "Monitor gym attendance across all members."
+            : "Record and track your gym visits."}
+        </p>
+      </div>
 
       {!isAdmin && (
         <button
-          className="btn btn-primary"
+          className="attendance-checkin-btn"
           onClick={handleCheckIn}
           disabled={checkingIn}
         >
@@ -70,30 +72,39 @@ export default function Attendance() {
         </button>
       )}
 
-      {success && <p>{success}</p>}
-      {error && <p>{error}</p>}
-
-      <h2>
-        {isAdmin ? "All Attendance Records" : "Attendance History"}
-      </h2>
-
-      {loading ? (
-        <p>Loading attendance...</p>
-      ) : attendance.length === 0 ? (
-        <p>No attendance records found.</p>
-      ) : (
-        <div>
-          {attendance.map((record) => (
-            <div key={record.id} className="attendance-card">
-              <h3>Gym Visit #{record.id}</h3>
-              <p>Member: {record.member_name}</p>
-              <p>
-                Check-in: {new Date(record.check_in).toLocaleString()}
-              </p>
-            </div>
-          ))}
-        </div>
+      {success && (
+        <p className="attendance-success">{success}</p>
       )}
+
+      {error && (
+        <p className="attendance-error">{error}</p>
+      )}
+
+      <div className="attendance-section">
+        <h2>
+          {isAdmin ? "All Attendance Records" : "Attendance History"}
+        </h2>
+
+        {loading ? (
+          <p className="attendance-message">Loading attendance...</p>
+        ) : attendance.length === 0 ? (
+          <p className="attendance-message">
+            No attendance records found.
+          </p>
+        ) : (
+          <div className="attendance-list">
+            {attendance.map((record) => (
+              <div key={record.id} className="attendance-card">
+                <h3>Gym Visit #{record.id}</h3>
+                <p>Member: {record.member_name}</p>
+                <p>
+                  Check-in: {new Date(record.check_in).toLocaleString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

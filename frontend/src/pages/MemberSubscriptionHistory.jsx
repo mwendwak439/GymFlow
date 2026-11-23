@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import api from "../services/api";
-
+import "./MemberSubscriptionHistory.css";
 
 export default function MemberSubscriptionHistory() {
   const [subscriptions, setSubscriptions] = useState([]);
@@ -43,16 +43,17 @@ export default function MemberSubscriptionHistory() {
 };
 
   return (
-    <div className="placeholder">
+    <div className="member-subscription-history-page">
       <h1>My Subscription History</h1>
-      <p>View all your current and previous gym memberships.</p>
+      <p className="page-description">
+        View all your current and previous gym memberships.</p>
 
       {loading ? (
-        <p>Loading subscription history...</p>
+       <p className="history-message">Loading subscription history...</p>
       ) : error ? (
-        <p>{error}</p>
+        <p className="history-error">{error}</p>
       ) : subscriptions.length === 0 ? (
-        <p>You have no subscription history yet.</p>
+        <p className="history-message">You have no subscription history yet.</p>
       ) : (
         <div className="subscription-history">
           <table>

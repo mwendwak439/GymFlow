@@ -1,91 +1,19 @@
 
 /* =========================================
-   GYMFLOW - DARK IRON THEME
-   ========================================= */
+   GYMFLOW - WORKOUT MANAGEMENT
+   DARK IRON THEME
+========================================= */
 
-:root {
-  --green: #C6FF00;
-  --green-dark: #A8DB00;
-  --green-light: rgba(198, 255, 0, 0.12);
-
-  --bg: #0A0A0A;
-  --surface: #141414;
-  --surface-light: #1C1C1C;
-  --surface-hover: #222222;
-
-  --white: #FFFFFF;
-  --dark: #FFFFFF;
-  --grey: #A3A3A3;
-
-  --danger: #FF3D3D;
-  --danger-bg: rgba(255, 61, 61, 0.12);
-
-  --border: rgba(255, 255, 255, 0.09);
-  --text-primary: #FFFFFF;
-  --text-secondary: #A3A3A3;
-
-  --shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-  --glow: 0 0 18px rgba(198, 255, 0, 0.18);
-
-  --page-width: 1200px;
-  --page-padding: 40px;
-}
-
-/* =========================================
-   GLOBAL STYLES
-   ========================================= */
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text-primary);
-  min-height: 100vh;
-}
-
-.brand {
-  color: var(--green);
-  font-weight: 900;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* =========================================
-   PAGE LAYOUT
-   Centered content instead of full width
-   ========================================= */
-
-.dashboard-page,
-.members-page,
-.workouts-page,
-.payments-page,
-.trainers-page,
-.attendance-page {
+.workouts-page {
   width: calc(100% - 48px);
-  max-width: var(--page-width);
-  min-height: 100vh;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: var(--page-padding) 0;
-  background: transparent;
-  color: var(--text-primary);
+  padding: 40px 0;
+  color: #ffffff;
 }
 
-.dashboard-page h1,
-.members-page h1,
-.workouts-page h1,
-.payments-page h1,
-.trainers-page h1,
-.attendance-page h1 {
-  color: var(--white);
+.workouts-page h1 {
+  color: #C6FF00;
   font-size: 30px;
   font-weight: 900;
   text-transform: uppercase;
@@ -93,117 +21,176 @@ body {
   margin-bottom: 10px;
 }
 
-.dashboard-page p,
-.members-page p,
-.workouts-page p,
-.payments-page p,
-.trainers-page p,
-.attendance-page p {
-  color: var(--text-secondary);
+.workouts-page .subtitle {
+  color: #A3A3A3;
+  margin-bottom: 28px;
+  line-height: 1.6;
 }
 
 /* =========================================
-   WORKOUT MANAGEMENT
-   ========================================= */
+   BUTTONS
+========================================= */
 
-.workouts-page .subtitle {
-  color: var(--text-secondary);
-  margin-bottom: 30px;
+.workouts-page button {
+  background: #C6FF00;
+  color: #0A0A0A;
+  border: 1px solid #C6FF00;
+  padding: 11px 18px;
+  border-radius: 7px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 5px;
 }
 
-/* Workout grid */
+.workouts-page button:hover {
+  background: #A8DB00;
+  border-color: #A8DB00;
+  box-shadow: 0 0 18px rgba(198, 255, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.workouts-page button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.workouts-page button.delete-btn {
+  background: #B42318;
+  border-color: #B42318;
+  color: #ffffff;
+}
+
+.workouts-page button.delete-btn:hover {
+  background: #8F1D14;
+  border-color: #8F1D14;
+}
+
+/* Secondary buttons inside forms */
+.workouts-page .workout-form button[type="button"] {
+  background: transparent;
+  color: #C6FF00;
+  border: 1px solid #C6FF00;
+}
+
+.workouts-page .workout-form button[type="button"]:hover {
+  background: rgba(198, 255, 0, 0.1);
+}
+
+/* =========================================
+   WORKOUT GRID
+========================================= */
 
 .workouts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 22px;
+  margin: 25px 0;
 }
 
-/* Workout cards */
+/* =========================================
+   WORKOUT CARDS
+========================================= */
 
 .workout-card {
   background: linear-gradient(145deg, #1C1C1C, #141414);
   padding: 24px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 12px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
   transition: all 0.3s ease;
 }
 
 .workout-card:hover {
   transform: translateY(-5px);
-  border-color: var(--green);
-  box-shadow: var(--glow);
+  border-color: #C6FF00;
+  box-shadow: 0 0 18px rgba(198, 255, 0, 0.12);
 }
 
-.workout-card h2 {
-  color: var(--green);
+.workout-card h2,
+.workout-card h3 {
+  color: #C6FF00;
   margin-bottom: 12px;
 }
 
 .workout-card p {
-  color: var(--text-secondary);
+  color: #A3A3A3;
   line-height: 1.6;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .workout-details {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 18px;
+  margin: 18px 0;
+  color: #D4D4D4;
   font-size: 14px;
   font-weight: 600;
-  color: #D4D4D4;
 }
 
-/* Workout status */
+/* =========================================
+   WORKOUT STATUS
+========================================= */
 
 .workout-status {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
+  margin-bottom: 15px;
 }
 
 .workout-status.active {
   background: rgba(198, 255, 0, 0.12);
-  color: var(--green);
+  color: #C6FF00;
 }
 
 .workout-status.inactive {
-  background: var(--danger-bg);
-  color: var(--danger);
-}
-
-/* Workout errors */
-
-.workouts-page .error-message {
-  color: #FF7777;
-  background: var(--danger-bg);
-  border: 1px solid rgba(255, 61, 61, 0.2);
-  padding: 12px;
-  border-radius: 7px;
+  background: rgba(255, 61, 61, 0.12);
+  color: #FF5555;
 }
 
 /* =========================================
-   WORKOUT FORMS
-   ========================================= */
+   WORKOUT ACTIONS
+========================================= */
 
-.workout-form {
-  background: linear-gradient(145deg, #1C1C1C, #141414);
-  width: 100%;
-  max-width: 550px;
-  padding: 25px;
-  margin: 25px 0;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
+.workout-actions,
+.exercise-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
 }
 
-.workout-form h2 {
-  color: var(--green);
+.workout-actions button,
+.exercise-actions button {
+  flex: 1;
+  margin: 0;
+}
+
+/* =========================================
+   FORMS
+========================================= */
+
+.workout-form {
+  width: 100%;
+  max-width: 600px;
+  background: linear-gradient(145deg, #1C1C1C, #141414);
+  padding: 25px;
+  margin: 25px 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+.workout-form h2,
+.workout-form h3 {
+  color: #C6FF00;
   margin-bottom: 20px;
 }
 
@@ -218,13 +205,27 @@ body {
 .workout-form textarea,
 .workout-form select {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 16px;
-  background: var(--surface-light);
-  color: var(--white);
-  border: 1px solid var(--border);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  background: #1C1C1C;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 7px;
-  box-sizing: border-box;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.workout-form input:focus,
+.workout-form textarea:focus,
+.workout-form select:focus {
+  border-color: #C6FF00;
+  box-shadow: 0 0 12px rgba(198, 255, 0, 0.12);
+}
+
+.workout-form input::placeholder,
+.workout-form textarea::placeholder {
+  color: #737373;
 }
 
 .workout-form textarea {
@@ -233,428 +234,163 @@ body {
 }
 
 .workout-form input[type="checkbox"] {
+  accent-color: #C6FF00;
   margin-right: 8px;
-  accent-color: var(--green);
 }
 
-.workout-actions {
+/* Keep checkbox label on one line */
+.workout-form label:has(input[type="checkbox"]) {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.workout-actions button {
-  margin: 0;
-}
-
-.workout-actions .delete-btn {
-  background: #B42318;
-  color: var(--white);
-  border-color: #B42318;
-}
-
-.workout-actions .delete-btn:hover {
-  background: #8F1D14;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0 18px;
 }
 
 /* =========================================
-   EXERCISE MANAGEMENT
-   ========================================= */
+   WORKOUT ASSIGNMENTS
+========================================= */
 
-.exercise-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-  margin-top: 20px;
+.workout-assignments-section {
+  margin-top: 45px;
 }
 
-.exercise-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 18px;
-  transition: all 0.3s ease;
-}
-
-.exercise-card:hover {
-  border-color: var(--green);
-  transform: translateY(-3px);
-}
-
-.exercise-card h3 {
-  color: var(--green);
-  margin-bottom: 10px;
-}
-
-.exercise-card p {
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-  line-height: 1.5;
-}
-
-.exercise-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.exercise-actions button {
-  flex: 1;
-  margin: 0;
-}
-
-.exercise-actions .delete-btn {
-  background: #B42318;
-  color: var(--white);
-  border-color: #B42318;
-}
-
-.exercise-actions .delete-btn:hover {
-  background: #8F1D14;
-}
-
-/* =========================================
-   ADMIN TABLES
-   ========================================= */
-
-.admin-table {
-  width: 100%;
-  max-width: 100%;
-  border-collapse: collapse;
-  background: var(--surface);
-  color: var(--white);
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-
-.admin-table th {
-  background: var(--surface-light);
-  color: var(--green);
-  padding: 15px;
-  text-align: left;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.admin-table td {
-  padding: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-  color: #D4D4D4;
-}
-
-.admin-table tbody tr {
-  transition: background 0.2s ease;
-}
-
-.admin-table tbody tr:hover {
-  background: rgba(198, 255, 0, 0.05);
-}
-
-.admin-table td a {
-  color: var(--green);
-  text-decoration: none;
-}
-
-.admin-table td a:hover {
-  text-decoration: underline;
-}
-
-/* =========================================
-   GLOBAL FORM ELEMENTS
-   ========================================= */
-
-input:not([type="checkbox"]):not([type="radio"]),
-select,
-textarea {
-  background: var(--surface-light);
-  color: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 14px;
-  transition: all 0.3s ease;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #737373;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--green);
-  box-shadow: 0 0 12px rgba(198, 255, 0, 0.12);
-}
-
-input[type="checkbox"],
-input[type="radio"] {
-  accent-color: var(--green);
-}
-
-label {
-  color: #D4D4D4;
-  font-weight: 600;
-}
-
-select option {
-  background: var(--surface-light);
-  color: var(--white);
-}
-
-/* =========================================
-   BUTTONS
-   ========================================= */
-
-button,
-.btn {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-primary,
-button[type="submit"] {
-  background: var(--green);
-  color: #0A0A0A;
-  border: 1px solid var(--green);
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.btn-primary:hover,
-button[type="submit"]:hover {
-  background: var(--green-dark);
-  box-shadow: 0 0 18px rgba(198, 255, 0, 0.3);
-  transform: scale(1.03);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--green);
-  border: 1px solid var(--green);
-  padding: 12px 20px;
-  border-radius: 6px;
-}
-
-.btn-secondary:hover {
-  background: rgba(198, 255, 0, 0.1);
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-/* Workout page buttons */
-
-.workouts-page button {
-  border: 1px solid var(--green);
-  padding: 11px 18px;
-  border-radius: 7px;
-  background: var(--green);
-  color: #0A0A0A;
-  font-weight: 700;
-  cursor: pointer;
-  margin: 5px;
-}
-
-.workouts-page button:hover {
-  background: var(--green-dark);
-  box-shadow: var(--glow);
-}
-
-/* =========================================
-   DASHBOARD STATISTICS
-   ========================================= */
-
-.dashboard-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 20px;
-  margin-bottom: 25px;
-}
-
-.stat-card {
-  background: linear-gradient(145deg, #1C1C1C, #141414);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  color: var(--white);
-  box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--green);
-  box-shadow: var(--glow);
-}
-
-.stat-card h3 {
-  color: var(--grey);
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.stat-card p {
-  color: var(--green);
-  font-size: 28px;
-  font-weight: 800;
-}
-
-/* =========================================
-   DASHBOARD CHARTS AND ALERTS
-   ========================================= */
-
-.revenue-chart,
-.member-growth-chart,
-.expiry-alerts,
-.urgent-expiry-alerts {
-  background: linear-gradient(145deg, #1C1C1C, #141414);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  color: var(--white);
-  box-shadow: var(--shadow);
-  margin-bottom: 24px;
-}
-
-.revenue-chart h2,
-.member-growth-chart h2,
-.expiry-alerts h2,
-.urgent-expiry-alerts h2 {
-  color: var(--green);
+.workout-assignments-section > h2 {
+  color: #C6FF00;
+  font-size: 22px;
   margin-bottom: 20px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-.expiry-item,
-.urgent-expiry-card {
-  background: var(--surface-hover);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 12px;
-  color: var(--white);
+.workout-assignments-section .workout-card {
+  border-left: 3px solid #C6FF00;
 }
 
-.expiry-days {
-  color: var(--green);
-  font-weight: 700;
+.workout-assignments-section .workout-card h3 {
+  color: #C6FF00;
 }
 
-.no-expiry-alerts {
-  color: var(--grey);
-  padding: 15px 0;
+/* =========================================
+   ASSIGNED EXERCISES
+========================================= */
+
+.assigned-exercises {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Urgent expiry warning */
-
-.urgent-expiry-card {
-  border-left: 4px solid var(--danger);
+.assigned-exercises h4 {
+  color: #C6FF00;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
 }
 
-.urgent-expiry-card h3 {
-  color: #FF7777;
+.assigned-exercises h5 {
+  color: #ffffff;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.assigned-exercises p {
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+/* =========================================
+   EXERCISE MANAGEMENT PANEL
+========================================= */
+
+.workouts-page > .workout-form:last-child {
+  margin-top: 35px;
+}
+
+.workout-form > div:not(.exercise-actions) {
+  background: #1C1C1C;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  padding: 17px;
+  margin-top: 15px;
+}
+
+.workout-form > div h3 {
+  color: #C6FF00;
   margin-bottom: 10px;
+}
+
+.workout-form > div p {
+  color: #A3A3A3;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* =========================================
+   ERROR MESSAGES
+========================================= */
+
+.workouts-page .error-message {
+  color: #FF7777;
+  background: rgba(255, 61, 61, 0.12);
+  border: 1px solid rgba(255, 61, 61, 0.25);
+  padding: 13px;
+  border-radius: 8px;
+  margin: 18px 0;
 }
 
 /* =========================================
    RESPONSIVE DESIGN
-   ========================================= */
+========================================= */
 
 @media (max-width: 768px) {
-  :root {
-    --page-padding: 25px;
-  }
-
-  .dashboard-page,
-  .members-page,
-  .workouts-page,
-  .payments-page,
-  .trainers-page,
-  .attendance-page {
+  .workouts-page {
     width: calc(100% - 32px);
+    padding: 25px 0;
   }
 
-  .dashboard-page h1,
-  .members-page h1,
-  .workouts-page h1,
-  .payments-page h1,
-  .trainers-page h1,
-  .attendance-page h1 {
-    font-size: 23px;
-  }
-
-  .dashboard-stats {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  }
-
-  .stat-card {
-    padding: 18px;
-  }
-
-  .stat-card p {
+  .workouts-page h1 {
     font-size: 24px;
   }
 
-  .admin-table {
-    min-width: 650px;
+  .workouts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
   }
 
-  .revenue-chart,
-  .member-growth-chart,
-  .expiry-alerts,
-  .urgent-expiry-alerts {
-    padding: 18px;
+  .workout-card {
+    padding: 19px;
+  }
+
+  .workout-form {
+    padding: 20px;
   }
 }
 
 @media (max-width: 600px) {
-  :root {
-    --page-padding: 20px;
-  }
-
-  .dashboard-page,
-  .members-page,
-  .workouts-page,
-  .payments-page,
-  .trainers-page,
-  .attendance-page {
+  .workouts-page {
     width: calc(100% - 24px);
   }
 
-  .workouts-grid,
-  .exercise-list {
+  .workouts-grid {
     grid-template-columns: 1fr;
   }
 
-  .workout-form {
-    padding: 18px;
-  }
-
   .workout-details {
-    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 
   .workout-actions,
   .exercise-actions {
-    flex-wrap: wrap;
+    flex-direction: column;
   }
 
-  .dashboard-stats {
-    grid-template-columns: 1fr;
+  .workout-actions button,
+  .exercise-actions button {
+    width: 100%;
+  }
+
+  .workout-form {
+    padding: 17px;
   }
 }

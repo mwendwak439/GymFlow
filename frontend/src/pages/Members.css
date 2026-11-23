@@ -1,30 +1,74 @@
 
-/* Members page */
+/* =================================
+   MEMBERS PAGE - DARK IRON
+================================= */
+
 .members-page {
+  width: calc(100% - 48px);
+  max-width: 1200px;
   min-height: 100vh;
-  padding: 2rem;
-  background: #f4f7f5;
+  margin: 0 auto;
+  padding: 35px 0;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  box-sizing: border-box;
 }
 
 /* Page header */
+
 .members-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  gap: 1rem;
 }
 
 .members-header h1 {
-  color: #1f2937;
-  font-size: 1.8rem;
-  margin-bottom: 0.4rem;
+  color: #FFFFFF;
+  font-size: 1.9rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
 }
 
 .members-header p {
-  color: #6b7280;
+  color: #999999;
+  font-size: 14px;
+}
+
+/* Buttons */
+
+.members-page button {
+  border: 1px solid #C6FF00;
+  padding: 11px 18px;
+  border-radius: 7px;
+  background: #C6FF00;
+  color: #0A0A0A;
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.members-page button:hover {
+  background: #A8DB00;
+  border-color: #A8DB00;
+  transform: translateY(-2px);
+}
+
+.members-page .btn-cancel {
+  background: #252525;
+  color: #CCCCCC;
+  border-color: #383838;
+}
+
+.members-page .btn-cancel:hover {
+  background: #383838;
+  border-color: #555555;
 }
 
 /* Summary card */
+
 .members-summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
@@ -33,40 +77,43 @@
 }
 
 .summary-card {
-  background: #ffffff;
+  background: linear-gradient(145deg, #191919, #101010);
   padding: 1.5rem;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #292929;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
 }
 
 .summary-card h3 {
-  color: #6b7280;
+  color: #999999;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .summary-card h2 {
-  color: #15803d;
+  color: #C6FF00;
   font-size: 2rem;
   margin: 0.7rem 0;
+  font-weight: 900;
 }
 
 .summary-card p {
-  color: #9ca3af;
+  color: #777777;
   font-size: 0.85rem;
 }
 
 /* Members content */
+
 .members-content {
-  background: #ffffff;
+  background: #141414;
   padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+  border: 1px solid #292929;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 /* Search and filter */
+
 .members-toolbar {
   display: flex;
   justify-content: space-between;
@@ -76,11 +123,13 @@
 
 .members-toolbar input,
 .members-toolbar select {
-  padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+  padding: 0.85rem 1rem;
+  border: 1px solid #383838;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   outline: none;
+  color: #FFFFFF;
+  background: #1C1C1C;
 }
 
 .members-toolbar input {
@@ -90,16 +139,27 @@
 
 .members-toolbar select {
   min-width: 170px;
-  background: #ffffff;
+  cursor: pointer;
+}
+
+.members-toolbar input::placeholder {
+  color: #777777;
 }
 
 .members-toolbar input:focus,
 .members-toolbar select:focus {
-  border-color: #16a34a;
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+  border-color: #C6FF00;
+  box-shadow: 0 0 0 3px rgba(198, 255, 0, 0.08);
+}
+
+.members-toolbar option,
+.form-group select option {
+  background: #1C1C1C;
+  color: #FFFFFF;
 }
 
 /* Members table */
+
 .members-table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -112,94 +172,87 @@
 }
 
 .members-table th {
-  background: #f9fafb;
-  color: #6b7280;
+  background: #202020;
+  color: #C6FF00;
   padding: 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
 }
 
 .members-table td {
   padding: 1rem;
-  border-bottom: 1px solid #f3f4f6;
-  color: #374151;
+  border-bottom: 1px solid #292929;
+  color: #BBBBBB;
   font-size: 0.9rem;
 }
 
+.members-table tbody tr {
+  transition: background 0.2s ease;
+}
+
 .members-table tbody tr:hover {
-  background: #f9fafb;
+  background: #202020;
 }
 
 .members-table td strong {
-  color: #1f2937;
+  color: #FFFFFF;
+}
+
+.members-table td button {
+  margin: 3px;
 }
 
 /* Status badges */
+
 .status-badge {
   display: inline-block;
-  padding: 0.35rem 0.75rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 800;
 }
 
 .status-badge.active {
-  background: #dcfce7;
-  color: #15803d;
+  background: rgba(198, 255, 0, 0.1);
+  color: #C6FF00;
 }
 
 .status-badge.inactive {
-  background: #fee2e2;
-  color: #dc2626;
+  background: rgba(255, 85, 85, 0.12);
+  color: #FF7777;
 }
 
 /* Empty state and count */
+
 .empty-state {
   text-align: center;
   padding: 2rem !important;
-  color: #9ca3af !important;
+  color: #888888 !important;
 }
 
 .members-count {
   margin-top: 1rem;
-  color: #6b7280;
+  color: #888888;
   font-size: 0.85rem;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 650px) {
-  .members-page {
-    padding: 1rem;
-  }
+/* Add and edit member form */
 
-  .members-toolbar {
-    flex-direction: column;
-  }
-
-  .members-toolbar input,
-  .members-toolbar select {
-    width: 100%;
-    max-width: none;
-  }
-
-  .members-content {
-    padding: 1rem;
-  }
-}
-
-/* Add Member Form */
 .member-form-container {
-  background: #ffffff;
-  padding: 1.5rem;
+  background: #191919;
+  padding: 1.8rem;
   margin-bottom: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+  border: 1px solid #333333;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 .member-form-container h2 {
-  color: #1f2937;
-  font-size: 1.25rem;
+  color: #C6FF00;
+  font-size: 1.3rem;
   margin-bottom: 1.5rem;
 }
 
@@ -216,22 +269,46 @@
 }
 
 .form-group label {
-  color: #374151;
+  color: #CCCCCC;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.form-group input {
-  padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #383838;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   outline: none;
+  background: #1C1C1C;
+  color: #FFFFFF;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.form-group input:focus {
-  border-color: #16a34a;
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #777777;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #C6FF00;
+  box-shadow: 0 0 0 3px rgba(198, 255, 0, 0.08);
+}
+
+.form-group select {
+  cursor: pointer;
+}
+
+.form-group textarea {
+  min-height: 90px;
+  resize: vertical;
 }
 
 .form-actions {
@@ -241,30 +318,15 @@
   margin-top: 0.5rem;
 }
 
-.btn-cancel {
-  background: #e5e7eb;
-  color: #374151;
-}
+/* Member profile */
 
-.btn-cancel:hover {
-  background: #d1d5db;
-}
-
-/* Mobile form layout */
-@media (max-width: 650px) {
-  .member-form {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Member Profile */
 .member-profile {
-  background: var(--card-bg, #ffffff);
-  border: 1px solid var(--border-color, #e5e7eb);
+  background: #191919;
+  border: 1px solid #333333;
   border-radius: 14px;
   padding: 25px;
   margin-bottom: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
 }
 
 .profile-header {
@@ -274,32 +336,166 @@
   gap: 15px;
   margin-bottom: 25px;
   padding-bottom: 15px;
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  border-bottom: 1px solid #333333;
 }
 
 .profile-header h2 {
   margin: 0;
   font-size: 22px;
+  color: #C6FF00;
 }
 
 .profile-details h3 {
   font-size: 20px;
   margin-bottom: 20px;
+  color: #FFFFFF;
 }
 
 .profile-details p {
   margin: 12px 0;
-  color: var(--text-secondary, #64748b);
+  color: #AAAAAA;
   line-height: 1.6;
+  font-size: 14px;
 }
 
 .profile-details strong {
-  color: var(--text-primary, #1f2937);
+  color: #FFFFFF;
   display: inline-block;
   min-width: 150px;
 }
 
-@media (max-width: 600px) {
+/* Membership history */
+
+.membership-history {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid #333333;
+}
+
+.membership-history > h3 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #C6FF00;
+}
+
+.history-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.history-card {
+  background: #1C1C1C;
+  border: 1px solid #333333;
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.history-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(198, 255, 0, 0.5);
+}
+
+.history-card h4 {
+  font-size: 18px;
+  margin: 0 0 15px;
+  color: #C6FF00;
+}
+
+.history-card p {
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #AAAAAA;
+}
+
+.history-card strong {
+  color: #FFFFFF;
+}
+
+/* Subscription status badges */
+
+.subscription-status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.subscription-status.active {
+  background: rgba(198, 255, 0, 0.1);
+  color: #C6FF00;
+}
+
+.subscription-status.pending {
+  background: rgba(255, 193, 7, 0.12);
+  color: #FFC107;
+}
+
+.subscription-status.expired {
+  background: rgba(255, 85, 85, 0.12);
+  color: #FF7777;
+}
+
+.subscription-status.cancelled {
+  background: #292929;
+  color: #AAAAAA;
+}
+
+/* Loading */
+
+.loading {
+  color: #C6FF00;
+  padding: 20px;
+  font-weight: 600;
+}
+
+/* Mobile responsiveness */
+
+@media (max-width: 650px) {
+  .members-page {
+    width: calc(100% - 32px);
+    padding: 25px 0;
+  }
+
+  .members-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .members-toolbar {
+    flex-direction: column;
+  }
+
+  .members-toolbar input,
+  .members-toolbar select {
+    width: 100%;
+    max-width: none;
+  }
+
+  .members-content {
+    padding: 1rem;
+  }
+
+  .member-form {
+    grid-template-columns: 1fr;
+  }
+
+  .member-form-container {
+    padding: 1.2rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
   .member-profile {
     padding: 16px;
   }
@@ -312,58 +508,7 @@
   .profile-details strong {
     min-width: 125px;
   }
-}
 
-/* Membership History */
-.membership-history {
-  margin-top: 30px;
-  padding-top: 25px;
-  border-top: 1px solid var(--border-color, #e5e7eb);
-}
-
-.membership-history > h3 {
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: var(--text-primary, #1f2937);
-}
-
-.history-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 18px;
-}
-
-.history-card {
-  background: var(--background-color, #f8fafc);
-  border: 1px solid var(--border-color, #e5e7eb);
-  border-radius: 12px;
-  padding: 20px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.history-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.07);
-}
-
-.history-card h4 {
-  font-size: 18px;
-  margin: 0 0 15px;
-  color: var(--text-primary, #1f2937);
-}
-
-.history-card p {
-  margin: 10px 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-secondary, #64748b);
-}
-
-.history-card strong {
-  color: var(--text-primary, #1f2937);
-}
-
-@media (max-width: 600px) {
   .history-list {
     grid-template-columns: 1fr;
   }
@@ -371,63 +516,10 @@
   .history-card {
     padding: 16px;
   }
-}
 
-/* Subscription Status Badges */
-.subscription-status {
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.subscription-status.active {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.subscription-status.pending {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.subscription-status.expired {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.subscription-status.cancelled {
-  background: #e5e7eb;
-  color: #374151;
-}
-/* Member profile form fields */
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #D9E2DC;
-  border-radius: 8px;
-  background: #FFFFFF;
-  color: #26352B;
-  font-size: 14px;
-  font-family: inherit;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: #1B7F3A;
-  box-shadow: 0 0 0 3px rgba(27, 127, 58, 0.1);
-}
-
-.form-group textarea {
-  min-height: 90px;
-  resize: vertical;
-}
-
-.form-group select {
-  cursor: pointer;
+  .members-table th,
+  .members-table td {
+    padding: 12px;
+    white-space: nowrap;
+  }
 }

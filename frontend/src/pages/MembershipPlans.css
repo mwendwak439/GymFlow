@@ -1,38 +1,64 @@
 
+/* =================================
+   MEMBERSHIP PLANS - DARK IRON
+================================= */
+
 .membership-plans {
+  width: calc(100% - 48px);
+  max-width: 1200px;
   min-height: 100vh;
-  padding: 40px;
-  background: #F4F9F4;
-  color: #26352B;
+  margin: 0 auto;
+  padding: 35px 0;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  box-sizing: border-box;
 }
 
 .membership-plans h1 {
-  color: #145C2B;
+  color: #FFFFFF;
   font-size: 30px;
+  font-weight: 900;
   margin-bottom: 10px;
 }
 
 .membership-plans > p {
-  color: #647067;
+  color: #999999;
+  font-size: 14px;
   margin-bottom: 25px;
 }
 
+/* Buttons */
+
 .membership-plans button {
-  border: none;
+  border: 1px solid #C6FF00;
   padding: 11px 18px;
   border-radius: 7px;
-  background: #1B7F3A;
-  color: white;
-  font-weight: 600;
+  background: #C6FF00;
+  color: #0A0A0A;
+  font-weight: 800;
+  font-size: 12px;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: all 0.25s ease;
   margin: 5px;
 }
 
 .membership-plans button:hover {
-  background: #145C2B;
-  transform: translateY(-1px);
+  background: #A8DB00;
+  border-color: #A8DB00;
+  transform: translateY(-2px);
 }
+
+.membership-plans form button[type="button"] {
+  background: #252525;
+  color: #CCCCCC;
+  border-color: #383838;
+}
+
+.membership-plans form button[type="button"]:hover {
+  background: #333333;
+}
+
+/* Membership plan cards */
 
 .plans-list {
   display: grid;
@@ -42,83 +68,131 @@
 }
 
 .plan-card {
-  background: white;
+  background: linear-gradient(145deg, #191919, #101010);
   padding: 25px;
-  border: 1px solid #D9E2DC;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(20, 92, 43, 0.06);
+  border: 1px solid #292929;
+  border-radius: 14px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s ease;
+  min-width: 0;
+}
+
+.plan-card:hover {
+  border-color: rgba(198, 255, 0, 0.55);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 }
 
 .plan-card h3 {
-  color: #145C2B;
-  font-size: 22px;
-  margin-bottom: 12px;
+  color: #C6FF00;
+  font-size: 21px;
+  font-weight: 900;
+  margin-bottom: 15px;
 }
 
 .plan-card p {
-  color: #526057;
-  margin: 10px 0;
-  line-height: 1.5;
+  color: #AAAAAA;
+  font-size: 13px;
+  margin: 12px 0;
+  line-height: 1.6;
 }
 
+.plan-card p:nth-of-type(3) {
+  color: #FFFFFF;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* Forms */
+
 .membership-plans form {
-  background: white;
+  background: #141414;
   max-width: 550px;
-  padding: 25px;
-  border-radius: 12px;
-  border: 1px solid #D9E2DC;
-  box-shadow: 0 4px 15px rgba(20, 92, 43, 0.08);
+  padding: 28px;
+  border-radius: 14px;
+  border: 1px solid #292929;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   margin: 25px 0;
 }
 
 .membership-plans form h2 {
-  color: #145C2B;
-  margin-bottom: 20px;
+  color: #C6FF00;
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 22px;
 }
 
 .membership-plans input,
 .membership-plans textarea,
 .membership-plans select {
   width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #D9E2DC;
-  border-radius: 7px;
-  font-size: 15px;
-  background: white;
+  padding: 13px;
+  margin-bottom: 16px;
+  border: 1px solid #383838;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #FFFFFF;
+  background: #1C1C1C;
   box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.membership-plans input::placeholder,
+.membership-plans textarea::placeholder {
+  color: #777777;
 }
 
 .membership-plans input:focus,
 .membership-plans textarea:focus,
 .membership-plans select:focus {
   outline: none;
-  border-color: #1B7F3A;
-  box-shadow: 0 0 0 3px rgba(27, 127, 58, 0.1);
+  border-color: #C6FF00;
+  box-shadow: 0 0 0 3px rgba(198, 255, 0, 0.08);
+}
+
+.membership-plans select option {
+  background: #1C1C1C;
+  color: #FFFFFF;
 }
 
 .membership-plans textarea {
-  min-height: 90px;
+  min-height: 100px;
   resize: vertical;
 }
 
+/* Error messages */
+
 .membership-plans .alert-error {
-  color: #B42318;
-  background: #FEECEB;
-  padding: 12px;
-  border-radius: 7px;
+  color: #FF7777;
+  background: rgba(255, 85, 85, 0.1);
+  border: 1px solid rgba(255, 85, 85, 0.3);
+  padding: 13px;
+  border-radius: 8px;
+  margin: 15px 0;
 }
+
+/* Responsive design */
 
 @media (max-width: 650px) {
   .membership-plans {
-    padding: 20px 15px;
+    width: calc(100% - 32px);
+    padding: 25px 0;
+  }
+
+  .membership-plans h1 {
+    font-size: 25px;
   }
 
   .plans-list {
     grid-template-columns: 1fr;
+    gap: 15px;
   }
 
   .membership-plans form {
     padding: 18px;
+  }
+
+  .plan-card {
+    padding: 20px;
   }
 }
